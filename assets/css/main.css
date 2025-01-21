@@ -2115,9 +2115,6 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-.starter-section {
-    /* Add your styles here */
-}
 
 .form-container {
     display: flex;
