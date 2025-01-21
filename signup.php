@@ -26,9 +26,10 @@ include("includes/head.php");
                                 <label class="ms-3 pb-1" for="lName"><strong>Email</strong></label>
                                 <input type="email" name="email" placeholder="Email" class="form-control snup-in">
                             </div>
-                            <div class="col-md-12 mb-2">
+                            <div class="col-md-12 mb-2 position-relative">
                                 <label class="ms-3 pb-1" for="pass"><strong>Password</strong></label>
-                                <input type="password" name="pass" placeholder="Password" class="form-control snup-in">
+                                <input type="password" name="pass" placeholder="Password" id="password" class="form-control snup-in">
+                                <i class="bx bx-show position-absolute" id="togglePass" style="top:54%; right:45px; cursor:pointer; tranform:translateY(-50%);"></i>    
                             </div>
                             <div class="form-check justify-content-center my-2">
                                 <div class="ps-5">
@@ -52,4 +53,16 @@ include("includes/head.php");
 </body>
 <!-- Preloader
     <div id="preloader"></div> -->
-<?php include("includes/foot.php"); ?>
+    <!-- Vendor JS Files -->
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="assets/vendor/aos/aos.js"></script>
+<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+<!-- Main JS File -->
+<script src="assets/js/snup.js"></script>
+
+</body>
+
+</html>

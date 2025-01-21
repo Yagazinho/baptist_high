@@ -2203,6 +2203,10 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
     border-radius: 50px;
 }
 
+.form-section .bx{
+    font-size: 24px !important;
+}
+
 .shape-bottom-left {
     position: absolute;
     bottom: 0;
