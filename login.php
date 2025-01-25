@@ -23,7 +23,7 @@ include("includes/head.php");
                                 <input type="password" name="pass" placeholder="Password" id="password" class="form-control snup-in">
                                 <i class="bx bx-show position-absolute" id="togglePass" style="top:54%; right:45px; cursor:pointer; tranform:translateY(-50%);"></i>    
                             </div>
-                            <div class="col-md-12 mt-5">
+                            <div class="col-md-12 mt-3">
                                 <button type="submit">Log In</button>
                             </div>
                             <div class="col-md-12 mt-1 ms-2">

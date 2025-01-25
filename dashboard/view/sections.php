@@ -1,152 +1,26 @@
 <?php
-include("inc/config.php");
+include("../inc/config.php");
 
 
-define("TITLE", "Manage Genders");
-define("HEADER", "Manage Genders");
-define("BREADCRUMB", "genders");
+define("TITLE", "Manage Sections");
+define("HEADER", "Manage Sections");
+define("BREADCRUMB", "sections");
 
-include('inc/head.php'); 
+include('../inc/head.php'); 
 
 // page level scripts
-$pageURL = $adminURL."genders";
+$pageURL = $adminURL."sections";
 
-if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $genderName = getDBCol('genders', $id);
-    
-    
-    if(isset($_GET['act-gender'])){
-        if(changeStatus('genders', $id, 'active') == 'ok'){
-            $smsg = "gender $genderName activated successfully";
-		    pageReload(3000, $pageURL);
-        }
-    }
-    
-    if(isset($_GET['dact-gender'])){
-        if(changeStatus('genders', $id, 'inactive')){
-            $smsg = "gender $genderName deactivated successfully";
-		    pageReload(3000, $pageURL);
-        }
-    }
-    
-    if(isset($_GET['del-gender'])){
-        $app_config['promptMsg'] = "You are about to delete gender '$genderName', are you really sure?";
-        $app_config['prompt'] = true;
-        $app_config['promptType'] = 'dark';
-        if(isset($_POST['doPrompt'])){
-            $app_config['prompt'] = false;
-            if(dbDelete('genders', 'id='.$id)){
-                $smsg = "Gender $genderName deleted successfully";
-		        pageReload(3000, $pageURL);
-            }
-            else{
-                $emsg = "Something went wrong".mysqli_error($dbCon);
-            }
-        }
-    }
-}
-
-if(isset($_GET['truncate'])){
-	$app_config['promptMsg'] = "You are about to delete genders table are you sure?";
-	$app_config['prompt'] = true;
-	$app_config['promptType'] = 'dark';
-	if(isset($_POST['doPrompt'])){
-	$app_config['prompt'] = false;
-	if(dbTruncate('genders') == 'success'){
-		$smsg = 'Genders table truncated successfully';
-	}
-	else{
-		$emsg = "Something went wrong";
-        }
-    }
-}
-
-
-// add genders
-// logics
-if(isset($_POST['addGender'])){
-    //collection and scrutiny of data from form
-    $genderName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['genderName'])));
-
-    // data validation
-    if(empty($genderName)){
-        array_push($errs, $genderNameError = "Please Input a Gender Name");
-    }
-
-    // prevent duplicate in database
-    $checkGender = mysqli_query($dbCon, "SELECT * FROM genders WHERE name='$genderName'");
-    if(mysqli_num_rows($checkGender) > 0){
-        array_push($errs, $genderExistError = "");
-        $emsg = "Gender '$genderName' already exist please choose another";
-    }
-
-    // proceed to data storage when there is no error
-    if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO genders (name, dc) VALUES ('$genderName', NOW())");
-        if($query){
-            $smsg = "Gender '$genderName' saved successfully";
-		    pageReload(2000, $pageURL);
-        }else{
-            $emsg = "Gender could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
-        }
-    }
-
-}
-
-//edit gender
-
-if(isset($_POST['updateGender'])){
-    //collection and scrutiny of data from form
-    $genderName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['genderName'])));
-    $oldGenderName = getDBCol('genders', $id);
-
-    // data validation
-    if(empty($genderName)){
-        array_push($errs, $genderNameError = "Please Input a Gender Name");
-    }
-    
-    if($oldGenderName == $genderName){
-        array_push($errs, $genderExistError = "Modification is required to continue");
-    }
-
-    // prevent duplicate in database
-    $checkGender = mysqli_query($dbCon, "SELECT * FROM genders WHERE name='$genderName'");
-    if(mysqli_num_rows($checkGender) > 0){
-        array_push($errs, $genderExistError = "");
-        $emsg = "Gender '$genderName' already exist please choose another";
-    }
-
-    // proceed to data storage when there is no error
-    if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "UPDATE genders SET name='$genderName', du=NOW() WHERE id=$id");
-        if($query){
-            $smsg = "Gender '$oldGenderName' updated to '$genderName' successfully";
-		    pageReload(2000, $pageURL);
-        }else{
-            $emsg = "Gender could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
-        }
-    }
-
-}
-
-
-
-
-
-
-
+include '../inc/logics/sections.php';
 ?>
 
 <body>
-    <?php include('inc/header.php'); ?>
+    <?php include('../inc/header.php'); ?>
 
-    <?php include('inc/aside.php'); ?>
+    <?php include('../inc/aside.php'); ?>
 
     <main id="main" class="main">
-        <?php include('inc/pagetitle.php'); ?>
+        <?php include('../inc/pagetitle.php'); ?>
 
         <section class="section dashboard">
             <div class="row">
@@ -156,52 +30,51 @@ if(isset($_POST['updateGender'])){
                     <div class="row">
                         <?php if(isset($_GET['min'])):?>
                         <div class="col-md-4">
-                            <?php if(isset($_GET['add-gender'])):?>
+                            <?php if(isset($_GET['add-section'])):?>
                             <div class="card border-0 shadow-lg">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Add Gender
-                                        <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
-                                    </h6>
+                                    <h6 class="card-title d-inline">Add Section</h6>
+                                    <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="add-gender">
+                                        <div class="add-section">
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="Gendername *" value="<?= isset($_POST['genderName']) ? $_POST['genderName'] : '' ?>" class="form-control mt-2" name="genderName">
-                                                        <span class="text-danger"><?php if(isset($genderNameError)){echo $genderNameError;} ?></span>
+                                                        <input type="text" placeholder="Sectionname *" value="<?= isset($_POST['sectionName']) ? $_POST['sectionName'] : '' ?>" class="form-control mt-2" name="sectionName">
+                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="addGender" class="btn btn-sm btn-success text-white w-100">Add</button>
+                                                <button type="submit" name="addSection" class="btn btn-md btn-success text-white w-100">Add</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <?php endif ?>
-                            <?php if(isset($_GET['edit-gender'])):?>
+                            <?php if(isset($_GET['edit-section'])):?>
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Edit Gender <span class="bg-theme ms-1"><?= $genderName?></span>
+                                    <h6 class="card-title d-inline">Edit Section <span class="bg-theme ms-1"><?= $sectionName?></span>
                                         <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="edit-gender">
+                                        <div class="edit-section">
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="" value="<?= isset($_POST['genderName']) ? $_POST['genderName'] : $genderName ?>" class="form-control mt-2" name="genderName">
-                                                        <span class="text-danger"><?php if(isset($genderNameError)){echo $genderNameError;} ?></span>
+                                                        <input type="text" placeholder="" value="<?= isset($_POST['sectionName']) ? $_POST['sectionName'] : $sectionName ?>" class="form-control mt-2" name="sectionName">
+                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="updateGender" class="btn btn-sm btn-primary text-white">Update</button>
+                                                <button type="submit" name="updateSection" class="btn btn-md btn-primary text-white">Update</button>
                                             </div>
                                         </div>
                                     </form>
@@ -214,7 +87,7 @@ if(isset($_POST['updateGender'])){
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="border-bottom py-1 mb-3 px-3">
                                     <div class="btn-group">
-                                        <a href="<?= $pageURL ?>?add-gender&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
+                                        <a href="<?= $pageURL ?>?add-section&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
                                     </div>
                                     <div class="btn-group float-end">
                                         <a href="<?= $pageURL ?>" class="btn btn-theme btn-sm"><i class="bx bx-refresh"></i></a>
@@ -236,7 +109,7 @@ if(isset($_POST['updateGender'])){
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                $query = mysqli_query($dbCon, "SELECT * FROM genders");
+                                                $query = mysqli_query($dbCon, "SELECT * FROM sections");
                                                 while($row = mysqli_fetch_array($query)){
                                                     $dc = date("F jS, Y h:ia",strtotime($row['dc']));
                                                     $duFormatted = date("F jS, Y h:ia",strtotime($row['du']));
@@ -253,11 +126,11 @@ if(isset($_POST['updateGender'])){
                                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actnBtn">
                                                                 <h6 class="dropdown-header">Actions</h6>
                                                                 <?php if($status == 'active'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>genders?id=<?= $row['id'] ?>&edit-gender&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>genders?id=<?= $row['id'] ?>&dact-gender"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&edit-section&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&dact-section"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
                                                                 <?php elseif($status == 'inactive'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>genders?id=<?= $row['id'] ?>&del-gender"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>genders?id=<?= $row['id'] ?>&act-gender"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&del-section"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&act-section"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
                                                                 <?php endif ?>
                                                             </div>
                                                         </div>
@@ -295,5 +168,5 @@ if(isset($_POST['updateGender'])){
 
     </main><!-- End #main -->
 
-    <?php include('inc/footer.php'); ?>
-    <?php include('inc/foot.php'); ?>
+    <?php include('../inc/footer.php'); ?>
+    <?php include('../inc/foot.php'); ?>

@@ -6,8 +6,11 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 
 RewriteRule ^home index.php [NC,L]
-RewriteRule ^roles roles.php [NC,L]
-RewriteRule ^genders genders.php [NC,L]
-RewriteRule ^classes classes.php [NC,L]
-RewriteRule ^sections sections.php [NC,L]
-RewriteRule ^template temp.php [NC,L]
+
+
+RewriteRule ^roles view/roles.php [NC,L]
+RewriteRule ^genders view/genders.php [NC,L]
+RewriteRule ^classes view/classes.php [NC,L]
+RewriteRule ^sections view/sections.php [NC,L]
+RewriteRule ^user-types view/user-types.php [NC,L]
+RewriteRule ^template view/temp.php [NC,L]

@@ -10,7 +10,7 @@ include("includes/head.php");
             <div class="card">
                 <div class="card-body">
                     <div class="card-header bg-white text-center border-bottom-0 d-flex">
-                        <h2 class="justify-content-center text-center border-bottom-0">Create Your Account</h2>
+                        <h2 class="justify-content-center text-center border-bottom-0">Create An Account</h2>
                     </div>
                     <form action="" method="post" class="p-5">
                         <div class="row">

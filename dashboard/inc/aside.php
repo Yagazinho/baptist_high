@@ -41,6 +41,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="<?= $adminURL ?>user-types">
+                        <i class="bi bi-circle"></i><span>User Types</span>
+                    </a>
+                </li>
+                <li>
                     <a href="<?= $adminURL ?>sections">
                         <i class="bi bi-circle"></i><span>Sections</span>
                     </a>

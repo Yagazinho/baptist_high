@@ -1,152 +1,26 @@
 <?php
-include("inc/config.php");
+include("../inc/config.php");
 
 
 define("TITLE", "Manage Classes");
 define("HEADER", "Manage Classes");
 define("BREADCRUMB", "classes");
 
-include('inc/head.php'); 
+include('../inc/head.php'); 
 
 // page level scripts
 $pageURL = $adminURL."classes";
 
-if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $className = getDBCol('classes', $id);
-    
-    
-    if(isset($_GET['act-class'])){
-        if(changeStatus('classes', $id, 'active') == 'ok'){
-            $smsg = "class $className activated successfully";
-		    pageReload(3000, $pageURL);
-        }
-    }
-    
-    if(isset($_GET['dact-class'])){
-        if(changeStatus('classes', $id, 'inactive')){
-            $smsg = "class $className deactivated successfully";
-		    pageReload(3000, $pageURL);
-        }
-    }
-    
-    if(isset($_GET['del-class'])){
-        $app_config['promptMsg'] = "You are about to delete class '$className', are you really sure?";
-        $app_config['prompt'] = true;
-        $app_config['promptType'] = 'dark';
-        if(isset($_POST['doPrompt'])){
-            $app_config['prompt'] = false;
-            if(dbDelete('classes', 'id='.$id)){
-                $smsg = "Class $className deleted successfully";
-		        pageReload(3000, $pageURL);
-            }
-            else{
-                $emsg = "Something went wrong".mysqli_error($dbCon);
-            }
-        }
-    }
-}
-
-if(isset($_GET['truncate'])){
-	$app_config['promptMsg'] = "You are about to delete classes table are you sure?";
-	$app_config['prompt'] = true;
-	$app_config['promptType'] = 'dark';
-	if(isset($_POST['doPrompt'])){
-	$app_config['prompt'] = false;
-	if(dbTruncate('classes') == 'success'){
-		$smsg = 'Classes table truncated successfully';
-	}
-	else{
-		$emsg = "Something went wrong";
-        }
-    }
-}
-
-
-// add classes
-// logics
-if(isset($_POST['addClass'])){
-    //collection and scrutiny of data from form
-    $className = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['className'])));
-
-    // data validation
-    if(empty($className)){
-        array_push($errs, $classNameError = "Please Input a Classe Name");
-    }
-
-    // prevent duplicate in database
-    $checkClass = mysqli_query($dbCon, "SELECT * FROM classes WHERE name='$className'");
-    if(mysqli_num_rows($checkClass) > 0){
-        array_push($errs, $classExistError = "");
-        $emsg = "Class '$className' already exist please choose another";
-    }
-
-    // proceed to data storage when there is no error
-    if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO classes (name, dc) VALUES ('$className', NOW())");
-        if($query){
-            $smsg = "Class '$className' saved successfully";
-		    pageReload(2000, $pageURL);
-        }else{
-            $emsg = "Class could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
-        }
-    }
-
-}
-
-//edit class
-
-if(isset($_POST['updateClass'])){
-    //collection and scrutiny of data from form
-    $className = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['className'])));
-    $oldClassName = getDBCol('classes', $id);
-
-    // data validation
-    if(empty($className)){
-        array_push($errs, $classNameError = "Please Input a Class Name");
-    }
-    
-    if($oldClassName == $className){
-        array_push($errs, $classExistError = "Modification is required to continue");
-    }
-
-    // prevent duplicate in database
-    $checkClass = mysqli_query($dbCon, "SELECT * FROM classes WHERE name='$className'");
-    if(mysqli_num_rows($checkClass) > 0){
-        array_push($errs, $classExistError = "");
-        $emsg = "Class '$className' already exist please choose another";
-    }
-
-    // proceed to data storage when there is no error
-    if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "UPDATE classes SET name='$className', du=NOW() WHERE id=$id");
-        if($query){
-            $smsg = "Class '$oldClassName' updated to '$className' successfully";
-		    pageReload(2000, $pageURL);
-        }else{
-            $emsg = "Class could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
-        }
-    }
-
-}
-
-
-
-
-
-
-
+include '../inc/logics/classes.php';
 ?>
 
 <body>
-    <?php include('inc/header.php'); ?>
+    <?php include('../inc/header.php'); ?>
 
-    <?php include('inc/aside.php'); ?>
+    <?php include('../inc/aside.php'); ?>
 
     <main id="main" class="main">
-        <?php include('inc/pagetitle.php'); ?>
+        <?php include('../inc/pagetitle.php'); ?>
 
         <section class="section dashboard">
             <div class="row">
@@ -159,9 +33,8 @@ if(isset($_POST['updateClass'])){
                             <?php if(isset($_GET['add-class'])):?>
                             <div class="card border-0 shadow-lg">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Add Class
-                                        <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
-                                    </h6>
+                                    <h6 class="card-title d-inline">Add Class</h6>
+                                    <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
@@ -169,13 +42,13 @@ if(isset($_POST['updateClass'])){
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="Classname *" class="form-control mt-2" name="className">
+                                                        <input type="text" placeholder="Classname *" value="<?= isset($_POST['className']) ? $_POST['className'] : '' ?>" class="form-control mt-2" name="className">
                                                         <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="addClass" class="btn btn-sm btn-success text-white w-100">Add</button>
+                                                <button type="submit" name="addClass" class="btn btn-md btn-success text-white w-100">Add</button>
                                             </div>
                                         </div>
                                     </form>
@@ -183,7 +56,7 @@ if(isset($_POST['updateClass'])){
                             </div>
                             <?php endif ?>
                             <?php if(isset($_GET['edit-class'])):?>
-                            <div class="card border-0 shadow-lg">
+                            <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="card-header border-0">
                                     <h6 class="card-title d-inline">Edit Class <span class="bg-theme ms-1"><?= $className?></span>
                                         <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
@@ -195,13 +68,13 @@ if(isset($_POST['updateClass'])){
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="" value="<?php if(isset($_POST['className'])){echo $_POST['className'];} else{ echo $className;} ?>" class="form-control mt-2" name="className">
+                                                        <input type="text" placeholder="" value="<?= isset($_POST['className']) ? $_POST['className'] : $className ?>" class="form-control mt-2" name="className">
                                                         <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="updateClass" class="btn btn-sm btn-primary text-white">Update</button>
+                                                <button type="submit" name="updateClass" class="btn btn-md btn-primary text-white">Update</button>
                                             </div>
                                         </div>
                                     </form>
@@ -211,7 +84,7 @@ if(isset($_POST['updateClass'])){
                         </div>
                         <?php endif ?>
                         <div class="col-md-<?= isset($_GET['min']) ? 8 : 12 ?>">
-                            <div class="card border-0 shadow-lg">
+                            <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="border-bottom py-1 mb-3 px-3">
                                     <div class="btn-group">
                                         <a href="<?= $pageURL ?>?add-class&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
@@ -295,5 +168,5 @@ if(isset($_POST['updateClass'])){
 
     </main><!-- End #main -->
 
-    <?php include('inc/footer.php'); ?>
-    <?php include('inc/foot.php'); ?>
+    <?php include('../inc/footer.php'); ?>
+    <?php include('../inc/foot.php'); ?>
