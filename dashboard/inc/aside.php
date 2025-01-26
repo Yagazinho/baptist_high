@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="<?= $adminURL ?>administrators">
                         <i class="bi bi-circle"></i><span>Admin</span>
                     </a>
                 </li>

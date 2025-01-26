@@ -9,6 +9,7 @@ RewriteRule ^home index.php [NC,L]
 
 
 RewriteRule ^roles view/roles.php [NC,L]
+RewriteRule ^administrators view/administrators.php [NC,L]
 RewriteRule ^genders view/genders.php [NC,L]
 RewriteRule ^classes view/classes.php [NC,L]
 RewriteRule ^sections view/sections.php [NC,L]
