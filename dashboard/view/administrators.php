@@ -37,18 +37,42 @@ include '../inc/logics/administrators.php';
                                     <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
-                                    <form action="" method="post">
+                                    <form action="" class="form form-vertical" method="post">
                                         <div class="add-administrator">
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="Username *" value="<?= isset($_POST['userName']) ? $_POST['userName'] : '' ?>" class="form-control mt-2" name="userName">
-                                                        <span class="text-danger"><?php if(isset($userNameError)){echo $userNameError;} ?></span>
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="form-floating">
+                                                        <input type="text" id="userName" placeholder="Username *" value="<?= isset($_POST['userName']) ? $_POST['userName'] : '' ?>" class="form-control" name="userName">
+                                                        <label for="userName">Username</label>
+                                                    </div>
+                                                    <?php if(isset($userNameError)): ?><span class="text-danger"><?= $userNameError ?></span><?php endif ?>
+                                                    </div>
+                                                     <div class="col-md-12 mb-3">
+                                                         <div class="form-floating">
+                                                         <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value="<?php if(isset($_POST['email'])){ echo $_POST['email']; } ?>">
+                                                        <label for="email">Email Address</label>
+                                                    </div>
+                                                    <?php if(isset($emailError)): ?><span class="text-danger"><?= $emailError ?></span><?php endif ?>
+                                                    </div>
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="form-floating"> 
+                                                        <select name="role" id="userRole" class="form-select">
+                                                        <?php
+                                                            $q = mysqli_query($dbCon, "SELECT * FROM roles");
+                                                             while($row = mysqli_fetch_array($q)){
+                                                         ?>
+                                                            <option <?php if(isset($_POST['role']) && $_POST['role'] == $row['id']){echo 'selected' ;} ?> value="<?= $row['id'] ?>"> <?= $row['name'] ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <label for="userRole">Role</label>
+                                                    </div>        
+                                                    <?php if(isset($roleError)):?><span class="text-danger"><?= $roleError?></span><?php endif ?>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="addAdministrator" class="btn btn-md btn-success text-white w-100">Add</button>
+                                                <button type="submit" name="addAdministrator" class="btn btn-md btn-success text-white ">Add</button>
                                             </div>
                                         </div>
                                     </form>
@@ -99,8 +123,10 @@ include '../inc/logics/administrators.php';
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">#</th>
-                                                    <th class="text-center">action</th>
-                                                    <th class="text-center">name</th>
+                                                    <th class="text-center"><i class="bx bx-toggle-left"></i></th>
+                                                    <th class="text-center">username</th>
+                                                    <th class="text-center">email</th>
+                                                    <th class="text-center">role</th>
                                                     <th class="text-center">dc</th>
                                                     <th class="text-center">du</th>
                                                     <th class="text-center">status</th>
@@ -128,7 +154,7 @@ include '../inc/logics/administrators.php';
                                                                 <?php if($status == 'active'): ?>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>administrators?id=<?= $row['id'] ?>&edit-administrator&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>administrators?id=<?= $row['id'] ?>&dact-administrator"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
-                                                                <?php elseif($status == 'inactive'): ?>
+                                                                <?php else: ?>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>administrators?id=<?= $row['id'] ?>&del-administrator"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>administrators?id=<?= $row['id'] ?>&act-administrator"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
                                                                 <?php endif ?>
@@ -136,7 +162,9 @@ include '../inc/logics/administrators.php';
                                                         </div>
                                                     </td>
                                                     </td>
-                                                    <td class="text-center"><?= $row['name']?></td>
+                                                    <td class="text-center"><?= $row['username']?></td>
+                                                    <td class="text-center"><a href="mailto:<?= $row['email'] ?>"><?= $row['email'] ?></a></td>
+                                                    <td class="text-center"><?= getDBCol('roles',$row['role'])?></td>
                                                     <td class="text-center"><?= $row['dc']?></td>
                                                     <td class="text-center">
                                                         <?php if(empty($du)){

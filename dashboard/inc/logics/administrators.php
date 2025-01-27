@@ -1,7 +1,7 @@
 <?php
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $userName = getDBCol('administrators', $id);
+    $userName = getDBCol('administrators', $id, 'username');
     
     
     if(isset($_GET['act-administrator'])){
@@ -55,15 +55,23 @@ if(isset($_GET['truncate'])){
 // logics
 if(isset($_POST['addAdministrator'])){
     //collection and scrutiny of data from form
-    $userName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['userName'])));
+    $userName = trim(mysqli_real_escape_string($dbCon, $_POST['userName']));
+    $email = trim(mysqli_real_escape_string($dbCon, $_POST['email']));
+    $role = intval(trim($_POST['role']));
 
     // data validation
     if(empty($userName)){
-        array_push($errs, $userNameError = "Please Input a Administrator Name");
+        array_push($errs, $userNameError = "Please Input a Username");
+    }
+    if(empty($email)){
+        array_push($errs, $emailError = "Please Input Your Email");
+    }
+    if($role == (0 || "")){
+        array_push($errs, $roleError = "Please Select a Role");
     }
 
     // prevent duplicate in database
-    $checkAdministrator = mysqli_query($dbCon, "SELECT * FROM administrators WHERE name='$userName'");
+    $checkAdministrator = mysqli_query($dbCon, "SELECT * FROM administrators WHERE username='$userName'");
     if(mysqli_num_rows($checkAdministrator) > 0){
         array_push($errs, $administratorExistError = "");
         $emsg = "Administrator '$userName' already exist please choose another";
@@ -71,7 +79,13 @@ if(isset($_POST['addAdministrator'])){
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO administrators (name, dc) VALUES ('$userName', NOW())");
+        while(true){
+            $randVal = "SMA-".rand(000,999);
+            if(preventDuplicateID('administrators', $randVal) == 'ok'){
+                break;
+            }
+        }
+        $query = mysqli_query($dbCon, "INSERT INTO administrators (userID, username, email, role, dc) VALUES ('$randVal','$userName', '$email', $role, NOW())");
         if($query){
             $smsg = "Administrator '$userName' saved successfully";
 		    pageReload(2000, $pageURL);
