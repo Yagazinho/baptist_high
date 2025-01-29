@@ -13,6 +13,18 @@ function formatStatus($status){
     return $color;
 }
 
+function cntRows($tbl,$col,$where=null){
+    global $conn;
+    if($where != null)
+        $q = mysqli_query($conn, "SELECT $col FROM $tbl WHERE $where");
+    else
+        $q = mysqli_query($conn, "SELECT $col FROM $tbl");
+    
+    if($q)
+        return mysqli_num_rows($q);
+    else
+        return 0;
+}
 
 function getDBCol($tbl, $id, $col = 'name'){
     global $dbCon;

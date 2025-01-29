@@ -1,7 +1,6 @@
 <?php
 include("../inc/config.php");
 
-
 define("TITLE", "Administrators");
 define("HEADER", "Manage Administrators");
 define("BREADCRUMB", "administrators");
@@ -33,7 +32,7 @@ include '../inc/logics/administrators.php';
                             <?php if(isset($_GET['add-administrator'])):?>
                             <div class="card border-0 shadow-lg">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Add Administrator</h6>
+                                    <h6 class="card-title d-inline"><?= (isset($cardTitle)) ? $cardTitle : "Add New"?></h6>
                                     <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
@@ -87,18 +86,58 @@ include '../inc/logics/administrators.php';
                                     </h6>
                                 </div>
                                 <div class="card-body">
-                                    <form action="" method="post">
+                                    <form action="" class="form form-vertical" method="post">
                                         <div class="edit-administrator">
-                                            <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="" value="<?= isset($_POST['userName']) ? $_POST['userName'] : $userName ?>" class="form-control mt-2" name="userName">
+                                                    <div class="col-md-12">
+                                                        <div class="form-floating">
+                                                            <input type="text" id="username" placeholder="" value="<?= isset($_POST['userName']) ? $_POST['userName'] : $userName ?>" class="form-control mt-2" name="userName">
+                                                            <label for="username">Edit Username</label>
+                                                        </div>
                                                         <span class="text-danger"><?php if(isset($userNameError)){echo $userNameError;} ?></span>
                                                     </div>
                                                 </div>
-                                            </fieldset>
-                                            <div class="my-4">
+                                            <div class="my-1">
                                                 <button type="submit" name="updateAdministrator" class="btn btn-md btn-primary text-white">Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form action="" class="form form-vertical" method="post">
+                                        <div class="edit-email">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-floating">
+                                                            <input type="text" id="email" placeholder="" value="<?= isset($_POST['email']) ? $_POST['email'] : $dbEmail ?>" class="form-control mt-2" name="email">
+                                                            <label for="email">Email</label>
+                                                        </div>
+                                                        <span class="text-danger"><?php if(isset($emailError)){echo $emailError;} ?></span>
+                                                    </div>
+                                                </div>
+                                            <div class="my-1">
+                                                <button type="submit" name="updateEmail" class="btn btn-md btn-primary text-white">Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form action="" class="form form-vertical" method="post">
+                                        <div class="edit-role">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-floating">
+                                                            <select name="role" id="userRole" class="form-select">
+                                                                <?php 
+                                                                $q = mysqli_query($dbCon, "SELECT * FROM roles");
+                                                                while($row = mysqli_fetch_array($q)){
+                                                                ?>
+                                                                <option <?php if(isset($_POST['role']) && $_POST['role'] == $row['id'] || $dbRole == $row['id']){echo 'selected' ;} ?> value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                            <label for="userRole">Role</label>
+                                                        </div>
+                                                        <span class="text-danger"><?php if(isset($emailError)){echo $emailError;} ?></span>
+                                                    </div>
+                                                </div>
+                                            <div class="my-1">
+                                                <button type="submit" name="updateRole" class="btn btn-md btn-primary text-white">Update</button>
                                             </div>
                                         </div>
                                     </form>

@@ -1,7 +1,11 @@
 <?php
+//manage administrators
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $userName = getDBCol('administrators', $id, 'username');
+    $dbEmail = getDBCol('administrators', $id, 'email');
+    $dbRole = getDBCol('adminsitrators', $id, 'role');
+    $dbRoleName = getDBCol('roles', $dbRole);
     
     
     if(isset($_GET['act-administrator'])){
@@ -18,6 +22,71 @@ if(isset($_GET['id'])){
         }
     }
     
+    if(isset($_GET['edit-administrator'])){
+        if(isset($_POST['updateAdministrator'])){
+            //collection and scrutiny of data from form
+            $userName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['userName'])));
+            $oldUserName = getDBCol('administrators', $id, 'username');
+        
+            // data validation
+            if(empty($userName)){
+                array_push($errs, $userNameError = "Please Input a Administrator Name");
+            }
+            
+            if($oldUserName == $userName){
+                array_push($errs, $administratorExistError = "Modification is required to continue");
+            }
+        
+            // prevent duplicate in database
+            $checkAdministrator = mysqli_query($dbCon, "SELECT * FROM administrators WHERE username='$userName'");
+            if(mysqli_num_rows($checkAdministrator) > 0){
+                array_push($errs, $administratorExistError = "");
+                $emsg = "Administrator '$userName' already exist please choose another";
+            }
+        
+            // proceed to data storage when there is no error
+            if(count($errs) == 0){
+                $query = mysqli_query($dbCon, "UPDATE administrators SET username='$userName', du=NOW() WHERE id=$id");
+                if($query){
+                    $smsg = "Administrator '$oldUserName' updated to '$userName' successfully";
+                    pageReload(2000, $pageURL);
+                }else{
+                    $emsg = "Administrator could not be saved ".mysqli_error($dbCon);
+                    pageReload(2000, $pageURL);
+                }
+            }
+        
+        }
+
+        if(isset($_POST['updateEmail'])){    
+            $email = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['email'])));
+        
+            if(empty($email)){
+                array_push($errs, $emailError = "Please Input an Email");
+            }
+            if($dbEmail == $email){
+                array_push($errs, $emailError = "Modification is required to continue");
+            }
+        
+            $checkEmail = mysqli_query($dbCon, "SELECT * FROM administrators WHERE email='$email'");
+            if(mysqli_num_rows($checkEmail) > 0){
+                array_push($errs, $emailError = "");
+                $emsg = "Email '$email' already exists please choose another";
+            }
+        
+            if(count($errs) == 0){
+                $query = mysqli_query($dbCon, "UPDATE administrators SET email='$email', du=NOW() WHERE id=$id");
+                if($query){
+                    $smsg = "Email '$dbEmail' updated successfully to '$email'";
+                    pageReload(2000, $pageURL);
+                }else{
+                    $emsg = "Email could not be saved ".mysqli_error($dbCon);            
+                    pageReload(2000, $pageURL);
+                }
+            }
+        }
+
+    }
     if(isset($_GET['del-administrator'])){
         $app_config['promptMsg'] = "You are about to delete administrator '$userName', are you really sure?";
         $app_config['prompt'] = true;
@@ -81,60 +150,23 @@ if(isset($_POST['addAdministrator'])){
     if(count($errs) == 0){
         while(true){
             $randVal = "SMA-".rand(000,999);
-            if(preventDuplicateID('administrators', $randVal) == 'ok'){
+            if(preventDuplicateID('administrators',$randVal) == 'ok'){
                 break;
             }
         }
         $query = mysqli_query($dbCon, "INSERT INTO administrators (userID, username, email, role, dc) VALUES ('$randVal','$userName', '$email', $role, NOW())");
         if($query){
             $smsg = "Administrator '$userName' saved successfully";
-		    pageReload(2000, $pageURL);
+		    // pageReload(2000, $pageURL);
         }else{
             $emsg = "Administrator could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
+		    // pageReload(2000, $pageURL);
         }
     }
 
 }
 
 //edit administrator
-
-if(isset($_POST['updateAdministrator'])){
-    //collection and scrutiny of data from form
-    $userName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['userName'])));
-    $oldUserName = getDBCol('administrators', $id);
-
-    // data validation
-    if(empty($userName)){
-        array_push($errs, $userNameError = "Please Input a Administrator Name");
-    }
-    
-    if($oldUserName == $userName){
-        array_push($errs, $administratorExistError = "Modification is required to continue");
-    }
-
-    // prevent duplicate in database
-    $checkAdministrator = mysqli_query($dbCon, "SELECT * FROM administrators WHERE name='$userName'");
-    if(mysqli_num_rows($checkAdministrator) > 0){
-        array_push($errs, $administratorExistError = "");
-        $emsg = "Administrator '$userName' already exist please choose another";
-    }
-
-    // proceed to data storage when there is no error
-    if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "UPDATE administrators SET name='$userName', du=NOW() WHERE id=$id");
-        if($query){
-            $smsg = "Administrator '$oldUserName' updated to '$userName' successfully";
-		    pageReload(2000, $pageURL);
-        }else{
-            $emsg = "Administrator could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
-        }
-    }
-
-}
-
-
 
 
 
