@@ -49,10 +49,10 @@ if(isset($_GET['id'])){
                 $query = mysqli_query($dbCon, "UPDATE administrators SET username='$userName', du=NOW() WHERE id=$id");
                 if($query){
                     $smsg = "Administrator '$oldUserName' updated to '$userName' successfully";
-                    pageReload(2000, $pageURL);
+                    // pageReload(2000, $pageURL);
                 }else{
                     $emsg = "Administrator could not be saved ".mysqli_error($dbCon);
-                    pageReload(2000, $pageURL);
+                    // pageReload(2000, $pageURL);
                 }
             }
         
@@ -78,12 +78,37 @@ if(isset($_GET['id'])){
                 $query = mysqli_query($dbCon, "UPDATE administrators SET email='$email', du=NOW() WHERE id=$id");
                 if($query){
                     $smsg = "Email '$dbEmail' updated successfully to '$email'";
-                    pageReload(2000, $pageURL);
                 }else{
-                    $emsg = "Email could not be saved ".mysqli_error($dbCon);            
-                    pageReload(2000, $pageURL);
+                    $emsg = "Email could not be saved ".mysqli_error($dbCon); 
                 }
             }
+        }
+
+        if(isset($_POST['updateRole'])){
+            $role = intval(trim($_POST['role']));
+
+            if($role == (0 || "")){
+                array_push($errs, $roleError = "Value expected");
+            }
+                if(!empty($role)){                    
+                    $checkRole = mysqli_query($dbCon, "SELECT * FROM administrators WHERE role='$role' AND id=$id");
+                    if(mysqli_num_rows($checkRole) > 0){
+                        array_push($errs, $roleError = "");
+                        $emsg = "you must modify to continue";
+                    }
+                    $newRole = getDBCol('roles', $role);
+                    if(count($errs) == 0){
+                        $query = mysqli_query($dbCon, "UPDATE administrators SET role=$role, du=NOW() WHERE id=$id");
+                        if($query){
+                            $smsg = "Role '$dbRoleName' updated successfully to '$newRole'";
+                            // pageReload(2000, $pageURL);
+                        }
+                        else{
+                            $emsg = "Role could not be saved ".mysqli_error($dbCon);
+                            // pageReload(2000, $pageURL);
+                        }
+                    }
+                }
         }
 
     }

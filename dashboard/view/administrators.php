@@ -133,7 +133,7 @@ include '../inc/logics/administrators.php';
                                                             </select>
                                                             <label for="userRole">Role</label>
                                                         </div>
-                                                        <span class="text-danger"><?php if(isset($emailError)){echo $emailError;} ?></span>
+                                                        <span class="text-danger"><?php if(isset($roleError)){echo $roleError;} ?></span>
                                                     </div>
                                                 </div>
                                             <div class="my-1">

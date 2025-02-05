@@ -14,11 +14,11 @@ function formatStatus($status){
 }
 
 function cntRows($tbl,$col,$where=null){
-    global $conn;
+    global $dbCon;
     if($where != null)
-        $q = mysqli_query($conn, "SELECT $col FROM $tbl WHERE $where");
+        $q = mysqli_query($dbCon, "SELECT $col FROM $tbl WHERE $where");
     else
-        $q = mysqli_query($conn, "SELECT $col FROM $tbl");
+        $q = mysqli_query($dbCon, "SELECT $col FROM $tbl");
     
     if($q)
         return mysqli_num_rows($q);
@@ -31,6 +31,23 @@ function getDBCol($tbl, $id, $col = 'name'){
     $q = mysqli_query($dbCon, "SELECT $col FROM $tbl WHERE id='$id'");
     $row = mysqli_fetch_array($q);
     return $row[$col];
+}
+
+function getColumnValNoID($table,$where,$col='name'){
+    global $dbCon;
+    if (!empty($table) && !empty($where)) {
+        $q = mysqli_query($dbCon,"SELECT $col FROM $table WHERE $where");
+        if(mysqli_num_rows($q) > 0){
+            $row = mysqli_fetch_array($q);
+            return $row[$col];
+        }
+        else{
+            return null;
+        }
+    }
+    else{
+        return null;
+    }
 }
 
 
@@ -51,7 +68,7 @@ function dbSelect($table,$cols="*",$where = null, $order = null, $limit = null, 
         $sql .= ' OFFSET '.$offset;
     }
 
-    $query = mysqli_query($conn,$sql);
+    $query = mysqli_query($dbCon,$sql);
     if($query){
         return $query;
     }

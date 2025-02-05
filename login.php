@@ -27,7 +27,7 @@ include("includes/head.php");
                                 <button type="submit">Log In</button>
                             </div>
                             <div class="col-md-12 mt-1 ms-2">
-                                <p>Don't have an account? <a href="signup.php" class="agree-link">create an account</a></p>
+                                <p>Don't have an account? <a href="<?= $baseURL ?>signup" class="agree-link">create an account</a></p>
                             </div>
                         </div>
                     </form>

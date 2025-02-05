@@ -16,13 +16,18 @@
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i><span>Superadmin</span>
+                    <a href="<?= $adminURL ?>administrators">
+                        <i class="bi bi-circle"></i><span>Admin</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= $adminURL ?>administrators">
-                        <i class="bi bi-circle"></i><span>Admin</span>
+                    <a href="<?= $adminURL ?>countries">
+                        <i class="bi bi-circle"></i><span>Countries</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $adminURL ?>states">
+                        <i class="bi bi-circle"></i><span>States</span>
                     </a>
                 </li>
                 <li>

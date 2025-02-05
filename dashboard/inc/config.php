@@ -37,19 +37,22 @@ else{
 $dbCon = mysqli_connect(DB_HOST, USER, PWD, DB);
 $smsg = $emsg = $imsg = "";
 $errs = [];
+$now = date("Y-m-d h:i");
+$defPwd = 'pass';
 
+$adminDefaultImg = 'default.png';
 
+// APP CONSTANTS
+const APP_NAME = "My School Manager";
 
-
-// $host = 'localhost';
-// $user = 'root';
-// $pwd = '';
-// $db = 'bh_db';
-
-// $con = mysqli_connect($host, $user, $pwd, $db);
 
 include("methods.php");
 
+$studentTypeId = getColumnValNoID("user_types", "LCASE(name) LIKE 'stude%'", 'id');
+$parentTypeId = getColumnValNoID("user_types", "LCASE(name) LIKE 'paren%'", 'id');
+$teacherTypeId = getColumnValNoID("user_types", "LCASE(name) LIKE 'teach%'", 'id');
+$accountantTypeId = getColumnValNoID("user_types", "LCASE(name) LIKE 'accountan%'", 'id');
+$librarianTypeId = getColumnValNoID("user_types", "LCASE(name) LIKE 'libraria%'", 'id');
 
 
 
