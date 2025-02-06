@@ -2178,6 +2178,10 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
     box-shadow: none !important;
     border-color: var(--accent-color) !important;
 }
+.form-container .btn-theme {
+    color: var(--main-white);
+    background-color: var(--accent-color) !important;
+}
 
 .form-section {
     flex: 1;
@@ -2188,12 +2192,10 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
 
 
 .custom-body {
-    margin: 0 auto;
+    margin: 10px auto;
     display: flex;
     height: 100vh;
     width: 800px !important;
-    justify-content: center;
-    align-items: center;
 }
 
 .form-section .card{

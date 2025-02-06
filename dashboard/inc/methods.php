@@ -1,5 +1,20 @@
 <?php
 
+function dbInsert($table,$param=array()){
+    global $dbCon;
+    $table_columns = implode(',', array_keys($param));
+    $table_value = implode("','", $param);
+
+    $query = mysqli_query($dbCon, "INSERT INTO $table($table_columns) VALUES('$table_value')");
+    if($query){
+        return 'success';
+    }
+    else{
+        return 'error';
+    }
+}
+
+
 function formatStatus($status){
     if($status == 'active'){
         $color = 'success';
@@ -11,6 +26,28 @@ function formatStatus($status){
         $color = 'danger';
     }
     return $color;
+}
+
+
+function dbUpdate($table,$param=array(),$id){
+    $args = array();
+    global $dbCon;
+
+    foreach ($param as $key => $value) {
+        $args[] = "$key = '$value'";
+    }
+
+    $sql="UPDATE  $table SET " . implode(',', $args);
+
+    $sql .=" WHERE $id";
+
+    $query = mysqli_query($dbCon,$sql);
+    if($query){
+        return 'success';
+    }
+    else{
+        return 'error '.mysqli_error($dbCon);
+    }
 }
 
 function cntRows($tbl,$col,$where=null){
@@ -47,6 +84,23 @@ function getColumnValNoID($table,$where,$col='name'){
     }
     else{
         return null;
+    }
+}
+
+
+function changeStatus($table, $id, $newStatus = 'active'){
+    global $now;
+    if(!empty($table) && !empty($id)){
+        $q = dbUpdate($table,['status'=>$newStatus, 'du'=>$now],"id=".$id);
+        if($q == 'success'){
+            return 'changed';
+        }
+        else{
+            return 'failed';
+        }
+    }
+    else{
+        return 'failed';
     }
 }
 
@@ -91,11 +145,12 @@ function pageReload($time,$location){
     echo '<script> setTimeout(function() { window.location = "'.$location.'"; }, '.$time.'); </script>';
 }
 
-function changeStatus($tbl, $id, $newStatus){
-    global $dbCon;
-    $q = mysqli_query($dbCon, "UPDATE $tbl SET status='$newStatus', du=NOW() WHERE id=$id");
-    if($q){return 'ok';}else{return 'fail';}
-}
+// function changeStatus($tbl, $id, $newStatus){
+//     global $dbCon;
+//     $q = mysqli_query($dbCon, "UPDATE $tbl SET status='$newStatus', du=NOW() WHERE id=$id");
+//     if($q){return 'ok';}else{return 'fail';}
+// }
+
 function dbDelete($table,$id){
     global $dbCon;
     $sql="DELETE FROM $table WHERE $id";

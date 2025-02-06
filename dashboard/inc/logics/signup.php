@@ -60,18 +60,15 @@ if(isset($_POST['createAccount'])){
 //        Prevent duplicate data in database
         if(cntRows($targetTable, "*", "username='$userName'") > 0){
             array_push($errs, $userNameError = "$tag already exists");
-        $msg = "$tag '$userName' already exists in the database. try again";
-        !empty($emsg) ? $emsg .= $msg : $emsg = $msg;
+        $emsg = "$tag '$userName' already exists in the database. try again";
         }
         if(cntRows($targetTable, "*", "email='$email'") > 0){
             array_push($errs, $emailError = "$tag already exists");
-        $msg = "email '$email' already taken by a $tag in the database. try again";
-        !empty($emsg) ? $emsg .= "<br>".$msg : $emsg = $msg;
+        $emsg = "email '$email' already taken by a $tag in the database. try again";
         }
         if(cntRows($targetTable,"*","phone='$phone'") > 0){
             array_push($errs, $phoneError = "$tag Exists");;
-        $msg = "$phone '$phone' already taken by a $tag in the database. try again";
-        !empty($emsg) ? $emsg .= "<br>".$msg : $emsg = $msg;
+        $emsg = "phone number '$phone' already taken by a $tag in the database. try again";
         }
         
 //        save data when there are no errors
@@ -85,14 +82,15 @@ if(isset($_POST['createAccount'])){
             }
             
             $tag = ucfirst($tag);
-            $q = mysqli_query($dbCon, "INSERT INTO $targetTable (userId,username,fname,lname,email,gender,phone,password,dc) VALUES ('$randVal', '$userName', '$fName', '$lName', '$email', $gender, '$phone', '$cryptPwd',$now)");
-            if($q){
+            if(dbInsert($targetTable,['userId'=>$randVal,'username'=>$userName, 'fname' =>$fName, 'lname' =>$lName, 'email'=>$email, 'phone'=>$phone, 'gender'=>$gender, 'password'=>$cryptPwd, 'dc'=>$now]) == 'success'){
                 $targetEmail = $email;
                 $targetName = $fName." ".$lName;
                 $verificationURL = $baseURL."verify?ut=$userType&nu=".strtolower($randVal);
-                require "admin/vendor/PHPMailer/PHPMailerAutoLoad.php";
-                include "admin/inc/mail/templates/new-account.php";
+                require "dashboard/vendor/PHPMailer/PHPMailerAutoLoad.php";
+                include "dashboard/inc/mail/templates/new-account.php";
                 $smsg = "Congrats '$userName', You have been registered successfully as a $tag on ".APP_NAME;
+            }else{
+                $emsg = "something went wrong. try again ".mysqli_error($dbCon);
             }
         }
         

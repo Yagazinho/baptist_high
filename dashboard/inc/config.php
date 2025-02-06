@@ -9,6 +9,7 @@ $app_config = [
 	'promptType' => ""
 ];
 
+$configMsg = "i am a randowm message";
 
 //Base url
 $baseURL = ($app_config['env'] != 'dev') ? "" : "http://localhost/projects/baptist-high/";

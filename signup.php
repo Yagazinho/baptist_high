@@ -18,7 +18,7 @@ include 'dashboard/inc/head.php';
         <div class="form-section">
             <div class="card">
                 <div class="card-body">
-                    <div class="text-center mb-5 mb-md-7">
+                    <div class="text-center mb-2 mb-md-3">
                         <h1 class="h2 mt-10">Welcome To My School Manager</h1>
                         <p>Create Account.</p>
                         <?php include 'dashboard/inc/alerts.php'; ?>
@@ -32,7 +32,6 @@ include 'dashboard/inc/head.php';
                                 if(mysqli_num_rows($q) > 0){
                                 while($row = mysqli_fetch_array($q)){
                                     $id = $row['id'];
-                                    if($id == $accountantTypeId){continue;}
                                 ?>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" id="type<?= $id?>" name="userType" value="<?= $id ?>" <?php if(isset($_POST['userType']) && $_POST['userType'] == $id) {echo 'checked' ;}elseif(!isset($_POST['userType']) && $id == $teacherTypeId) {echo 'checked' ;} ?>><?= $row['name'];?>
@@ -50,23 +49,27 @@ include 'dashboard/inc/head.php';
                             <div class="col-md-6 mb-2">
                                 <label class="ms-3 pb-1" for="lName"><strong>Last Name</strong></label>
                                 <input type="text" name="lName" placeholder="Last Name" class="form-control snup-in">
+                                <span class="text-danger"><?php if(isset($lNameError)){echo $lNameError;} ?></span>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label class="ms-3 pb-1" for="userName"><strong>Username</strong></label>
                                 <input type="text" name="userName" placeholder="Username" class="form-control snup-in">
+                                <span class="text-danger"><?php if(isset($userNameError)){echo $userNameError;} ?></span>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label class="ms-3 pb-1" for="lName"><strong>Email</strong></label>
                                 <input type="email" name="email" placeholder="Email" class="form-control snup-in">
+                                <span class="text-danger"><?php if(isset($emailError)){echo $emailError;} ?></span>
                             </div>
                             <div class="col-md-8 mb-2">
                                 <label class="ms-3 pb-1" for="phone"><strong>Phone</strong></label>
                                 <input type="tel" name="phone" placeholder="Phone" class="form-control snup-in">
+                                <span class="text-danger"><?php if(isset($phoneError)){echo $phoneError;} ?></span>
                             </div>
                             <div class="col-md-4 mb-2">
                                 <label class="ms-3 pb-1" for="gender"><strong>Gender</strong></label>
                                 <div class="input-group">
-                                    <span class="btn btn-primary" type="submit"><i class="bx bx-female-sign"></i></span>
+                                    <span class="btn btn-theme" type="submit"><i class="bx bx-female-sign"></i></span>
                                     <select name="gender" class="form-select">
                                         <option value="">--Select--</option>
                                         <?php
@@ -114,8 +117,44 @@ include 'dashboard/inc/head.php';
 <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
 <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
+<script src="assets/js/jquery-3.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/swal.js"></script>
+
 <!-- Main JS File -->
 <script src="assets/js/snup.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable();
+
+        $('.only-num').keypress(function(event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+
+            } else {
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    <?php if($smsg || $emsg || $imsg): ?>
+    swal({
+        text: "<?php if($smsg || $emsg || $imsg){echo $smsg.$imsg.$emsg;} ?>",
+        icon: "<?php if($smsg){echo 'success';}elseif($emsg){echo 'error';} else{echo 'info'; } ?>",
+        buttons: false,
+        timer: 10000
+
+    });
+    <?php endif ?>
+
+</script>
 
 </body>
 
