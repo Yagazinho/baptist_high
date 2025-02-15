@@ -1,5 +1,6 @@
 <?php
-include("../inc/config.php");
+include '../inc/config.php';
+include '../inc/auth.php';
 
 define("TITLE", "Administrators");
 define("HEADER", "Manage Administrators");
@@ -53,6 +54,13 @@ include '../inc/logics/administrators.php';
                                                         <label for="email">Email Address</label>
                                                     </div>
                                                     <?php if(isset($emailError)): ?><span class="text-danger"><?= $emailError ?></span><?php endif ?>
+                                                    </div>
+                                                     <div class="col-md-12 mb-3">
+                                                         <div class="form-floating">
+                                                         <input type="passwrd" class="form-control" id="password" name="pwd" placeholder="Password" value="<?php if(isset($_POST['pwd'])){ echo $_POST['pwd']; } ?>">
+                                                        <label for="password">Password</label>
+                                                    </div>
+                                                    <?php if(isset($pwdError)): ?><span class="text-danger"><?= $pwdError ?></span><?php endif ?>
                                                     </div>
                                                     <div class="col-md-12 mb-3">
                                                         <div class="form-floating"> 

@@ -151,6 +151,7 @@ if(isset($_POST['addAdministrator'])){
     //collection and scrutiny of data from form
     $userName = trim(mysqli_real_escape_string($dbCon, $_POST['userName']));
     $email = trim(mysqli_real_escape_string($dbCon, $_POST['email']));
+    $pwd = trim(mysqli_real_escape_string($dbCon, $_POST['pwd']));
     $role = intval(trim($_POST['role']));
 
     // data validation
@@ -159,6 +160,9 @@ if(isset($_POST['addAdministrator'])){
     }
     if(empty($email)){
         array_push($errs, $emailError = "Please Input Your Email");
+    }
+    if(empty($pwd)){
+        array_push($errs, $pwdError = "Please Input Your Password");
     }
     if($role == (0 || "")){
         array_push($errs, $roleError = "Please Select a Role");
@@ -173,13 +177,14 @@ if(isset($_POST['addAdministrator'])){
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
+        $cryptPwd = md5($pwd);
         while(true){
             $randVal = "SMA-".rand(000,999);
             if(preventDuplicateID('administrators',$randVal) == 'ok'){
                 break;
             }
         }
-        $query = mysqli_query($dbCon, "INSERT INTO administrators (userID, username, email, role, dc) VALUES ('$randVal','$userName', '$email', $role, NOW())");
+        $query = mysqli_query($dbCon, "INSERT INTO administrators (userID, username, email, password, role, dc) VALUES ('$randVal','$userName', '$email', '$cryptPwd', $role, NOW())");
         if($query){
             $smsg = "Administrator '$userName' saved successfully";
 		    // pageReload(2000, $pageURL);

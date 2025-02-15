@@ -1,18 +1,17 @@
 <?php
-include '../inc/config.php';
-include '../inc/auth.php';
+include("../inc/config.php");
 
 
-define("TITLE", "Manage User Types");
-define("HEADER", "Manage User Types");
-define("BREADCRUMB", "user types");
+define("TITLE", "Manage Blood Groups");
+define("HEADER", "Manage Blood Groups");
+define("BREADCRUMB", "blood groups");
 
 include('../inc/head.php'); 
 
 // page level scripts
-$pageURL = $adminURL."user-types";
+$pageURL = $adminURL."blood-groups";
 
-include '../inc/logics/user-types.php';
+include '../inc/logics/blood-groups.php';
 ?>
 
 <body>
@@ -31,51 +30,51 @@ include '../inc/logics/user-types.php';
                     <div class="row">
                         <?php if(isset($_GET['min'])):?>
                         <div class="col-md-4">
-                            <?php if(isset($_GET['add-type'])):?>
+                            <?php if(isset($_GET['add-bloodGroup'])):?>
                             <div class="card border-0 shadow-lg">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Add Type</h6>
+                                    <h6 class="card-title d-inline">Add Blood Group</h6>
                                     <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="add-type">
+                                        <div class="add-bloodGroup">
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="Typename *" value="<?= isset($_POST['typeName']) ? $_POST['typeName'] : '' ?>" class="form-control mt-2" name="typeName">
-                                                        <span class="text-danger"><?php if(isset($typeNameError)){echo $typeNameError;} ?></span>
+                                                        <input type="text" placeholder="Blood Group *" value="<?= isset($_POST['bloodGroupName']) ? $_POST['bloodGroupName'] : '' ?>" class="form-control mt-2" name="bloodGroupName">
+                                                        <span class="text-danger"><?php if(isset($bloodGroupNameError)){echo $bloodGroupNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="addType" class="btn btn-md btn-success text-white w-100">Add</button>
+                                                <button type="submit" name="addBloodGroup" class="btn btn-md btn-success text-white w-100">Add</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <?php endif ?>
-                            <?php if(isset($_GET['edit-type'])):?>
+                            <?php if(isset($_GET['edit-bloodGroup'])):?>
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Edit Type <span class="bg-theme ms-1"><?= $typeName?></span>
+                                    <h6 class="card-title d-inline">Edit Blood Group <span class="bg-theme ms-1"><?= $bloodGroupName?></span>
                                         <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="edit-type">
+                                        <div class="edit-bloodGroup">
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="" value="<?= isset($_POST['typeName']) ? $_POST['typeName'] : $typeName ?>" class="form-control mt-2" name="typeName">
-                                                        <span class="text-danger"><?php if(isset($typeNameError)){echo $typeNameError;} ?></span>
+                                                        <input type="text" placeholder="" value="<?= isset($_POST['bloodGroupName']) ? $_POST['bloodGroupName'] : $bloodGroupName ?>" class="form-control mt-2" name="bloodGroupName">
+                                                        <span class="text-danger"><?php if(isset($bloodGroupNameError)){echo $bloodGroupNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="updateType" class="btn btn-md btn-primary text-white">Update</button>
+                                                <button type="submit" name="updateBloodGroup" class="btn btn-md btn-primary text-white">Update</button>
                                             </div>
                                         </div>
                                     </form>
@@ -88,7 +87,7 @@ include '../inc/logics/user-types.php';
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="border-bottom py-1 mb-3 px-3">
                                     <div class="btn-group">
-                                        <a href="<?= $pageURL ?>?add-type&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
+                                        <a href="<?= $pageURL ?>?add-bloodGroup&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
                                     </div>
                                     <div class="btn-group float-end">
                                         <a href="<?= $pageURL ?>" class="btn btn-theme btn-sm"><i class="bx bx-refresh"></i></a>
@@ -110,7 +109,7 @@ include '../inc/logics/user-types.php';
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                $query = mysqli_query($dbCon, "SELECT * FROM user_types");
+                                                $query = mysqli_query($dbCon, "SELECT * FROM blood_groups");
                                                 while($row = mysqli_fetch_array($query)){
                                                     $dc = date("F jS, Y h:ia",strtotime($row['dc']));
                                                     $duFormatted = date("F jS, Y h:ia",strtotime($row['du']));
@@ -127,11 +126,11 @@ include '../inc/logics/user-types.php';
                                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actnBtn">
                                                                 <h6 class="dropdown-header">Actions</h6>
                                                                 <?php if($status == 'active'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>user-types?id=<?= $row['id'] ?>&edit-type&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>user-types?id=<?= $row['id'] ?>&dact-type"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>blood-groups?id=<?= $row['id'] ?>&edit-bloodGroup&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>blood-groups?id=<?= $row['id'] ?>&dact-bloodGroup"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
                                                                 <?php elseif($status == 'inactive'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>user-types?id=<?= $row['id'] ?>&del-type"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>user-types?id=<?= $row['id'] ?>&act-type"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>blood-groups?id=<?= $row['id'] ?>&del-bloodGroup"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>blood-groups?id=<?= $row['id'] ?>&act-bloodGroup"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
                                                                 <?php endif ?>
                                                             </div>
                                                         </div>
@@ -171,5 +170,3 @@ include '../inc/logics/user-types.php';
 
     <?php include('../inc/footer.php'); ?>
     <?php include('../inc/foot.php'); ?>
-
-    

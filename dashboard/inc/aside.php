@@ -21,38 +21,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= $adminURL ?>countries">
-                        <i class="bi bi-circle"></i><span>Countries</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= $adminURL ?>states">
-                        <i class="bi bi-circle"></i><span>States</span>
-                    </a>
-                </li>
-                <li>
                     <a href="<?= $adminURL ?>roles">
                         <i class="bi bi-circle"></i><span>Roles</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= $adminURL ?>genders">
-                        <i class="bi bi-circle"></i><span>Genders</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= $adminURL ?>classes">
-                        <i class="bi bi-circle"></i><span>Classes</span>
-                    </a>
-                </li>
-                <li>
                     <a href="<?= $adminURL ?>user-types">
-                        <i class="bi bi-circle"></i><span>User Types</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= $adminURL ?>sections">
-                        <i class="bi bi-circle"></i><span>Sections</span>
+                        <i class="bi bi-circle"></i><span>Add User Types</span>
                     </a>
                 </li>
                 <li>
@@ -66,7 +41,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="<?= $adminURL ?>students">
                         <i class="bi bi-circle"></i><span>Students</span>
                     </a>
                 </li>
@@ -93,6 +68,56 @@
             </ul>
         </li><!-- End Components Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>System Commons</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="system-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="<?= $adminURL ?>countries">
+                        <i class="bi bi-circle"></i><span>Countries</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $adminURL ?>states">
+                        <i class="bi bi-circle"></i><span>States</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $adminURL ?>genders">
+                        <i class="bi bi-circle"></i><span>Genders</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" class="nav-link collapsed" data-bs-target="#academic-nav" data-bs-toggle="collapse">
+                <i class="bx bx-book"></i><span>Academic</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul class="nav-content collapse" id="academic-nav" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="<?= $adminURL ?>classes">
+                        <i class="bi bi-circle"></i><span>Classes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $adminURL ?>sections">
+                        <i class="bi bi-circle"></i><span>Class Sections</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="bi bi-circle"></i><span>Daily Attendance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="bi bi-circle"></i><span>Class Sections</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
 
         <li class="nav-heading">Pages</li>

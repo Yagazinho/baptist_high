@@ -41,9 +41,21 @@ include '../inc/logics/classes.php';
                                         <div class="add-class">
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
-                                                        <input type="text" placeholder="Classname *" value="<?= isset($_POST['className']) ? $_POST['className'] : '' ?>" class="form-control mt-2" name="className">
+                                                    <div class="form-group col-md-6">
+                                                        <input type="text" placeholder="Class *" value="<?= isset($_POST['className']) ? $_POST['className'] : '' ?>" class="form-control mt-2" name="className">
                                                         <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
+                                                    </div>
+                                                    <div class="form-group col-md-6 pt-2">
+                                                        <select name="sectionName" id="" class="form-select">
+                                                            <option value="">--select section--</option>
+                                                            <?php
+                                                            $q = dbSelect('sections', "*", "status='active'");
+                                                            while($row = mysqli_fetch_array($q)){
+                                                            ?>
+                                                            <option <?php if((isset($_POST['sectionName']) && $_POST['sectionName'] == $row['id'])) {echo 'selected';} ?> value="<?= $row['id']?>"><?= $row['name']?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -58,7 +70,7 @@ include '../inc/logics/classes.php';
                             <?php if(isset($_GET['edit-class'])):?>
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Edit Class <span class="bg-theme ms-1"><?= $className?></span>
+                                    <h6 class="card-title d-inline">Edit Class <span class="bg-theme ms-1"><?= $className.$dbSectionName ?></span>
                                         <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                     </h6>
                                 </div>
@@ -67,9 +79,13 @@ include '../inc/logics/classes.php';
                                         <div class="edit-class">
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-12">
+                                                    <div class="form-group col-md-6">
                                                         <input type="text" placeholder="" value="<?= isset($_POST['className']) ? $_POST['className'] : $className ?>" class="form-control mt-2" name="className">
                                                         <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <input type="text" placeholder="" value="<?= isset($_POST['sectionName']) ? $_POST['sectionName'] : $dbSectionName ?>" class="form-control mt-2" name="sectionName">
+                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -101,6 +117,7 @@ include '../inc/logics/classes.php';
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">action</th>
                                                     <th class="text-center">name</th>
+                                                    <th class="text-center">section</th>
                                                     <th class="text-center">dc</th>
                                                     <th class="text-center">du</th>
                                                     <th class="text-center">status</th>
@@ -137,6 +154,7 @@ include '../inc/logics/classes.php';
                                                     </td>
                                                     </td>
                                                     <td class="text-center"><?= $row['name']?></td>
+                                                    <td class="text-center"><?= getDBCol('sections', $row['section'])?></td>
                                                     <td class="text-center"><?= $row['dc']?></td>
                                                     <td class="text-center">
                                                         <?php if(empty($du)){

@@ -9,7 +9,6 @@ $app_config = [
 	'promptType' => ""
 ];
 
-$configMsg = "i am a randowm message";
 
 //Base url
 $baseURL = ($app_config['env'] != 'dev') ? "" : "http://localhost/projects/baptist-high/";
@@ -39,7 +38,7 @@ $dbCon = mysqli_connect(DB_HOST, USER, PWD, DB);
 $smsg = $emsg = $imsg = "";
 $errs = [];
 $now = date("Y-m-d h:i");
-$defPwd = 'pass';
+$defPwd = '';
 
 $adminDefaultImg = 'default.png';
 

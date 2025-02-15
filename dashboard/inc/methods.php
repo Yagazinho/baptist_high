@@ -14,6 +14,21 @@ function dbInsert($table,$param=array()){
     }
 }
 
+function logAction($msg, $user, $userType = 'admin', $color = 'success'){
+    global $now;
+    if(!empty($msg) && ($user != '' || $user > 0)){
+        $q = dbInsert('act_logs',['user'=>$user, 'log'=>$msg, 'userType'=>$userType, 'color'=>$color, 'dc'=>$now]);
+        if($q == 'success'){
+            return 'logged';
+        }
+        else{
+            return null;
+        }
+    }
+    else{
+        return null;
+    }
+}
 
 function formatStatus($status){
     if($status == 'active'){
