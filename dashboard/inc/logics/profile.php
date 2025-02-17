@@ -3,9 +3,8 @@ if(isset($_POST['updateInfo'])){
     $fName = trim(mysqli_real_escape_string($dbCon, $_POST['fName']));
     $lName = trim(mysqli_real_escape_string($dbCon, $_POST['lName']));
     $bio = trim(mysqli_real_escape_string($dbCon, $_POST['bio']));
-    $designation = trim(mysqli_real_escape_string($dbCon, $_POST['designation']));
     $address = trim(mysqli_real_escape_string($dbCon, $_POST['address']));
-    $phone = trim(mysqli_real_escape_string($dbCon, $_POST['fName']));
+    $phone = trim(mysqli_real_escape_string($dbCon, $_POST['phone']));
     $email = trim(mysqli_real_escape_string($dbCon, $_POST['email']));
     $twitter = trim(mysqli_real_escape_string($dbCon, $_POST['twitter']));
     $facebook = trim(mysqli_real_escape_string($dbCon, $_POST['facebook']));
@@ -15,6 +14,7 @@ if(isset($_POST['updateInfo'])){
     $country = trim(intval($_POST['country']));
     $state = trim(intval($_POST['state']));
     $gender = trim(intval($_POST['gender']));
+    $designation = trim(intval($_POST['designation']));
     
       $q = dbUpdate('administrators',['fname'=>$fName, 'lname'=>$lName, 'bio'=>$bio, 'state'=>$state, 'designation'=>$designation, 'address'=>$address, 'phone'=>$phone, 'email'=>$email, 'fbURL'=>$facebook, 'twURL'=>$twitter, 'lkURL'=>$linkedIn, 'igURL'=>$instagram, 'country'=>$country, 'gender'=>$gender, 'du'=>$now],"id=".$uId);
     if($q == 'success'){

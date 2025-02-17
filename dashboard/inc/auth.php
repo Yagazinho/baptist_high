@@ -31,7 +31,7 @@ if(isset($_SESSION['msmAdmin'])){
     $cuRoleId = $userData['role'];
     $cuRole = getDBCol('roles',$cuRoleId);
 }
-// else{
-//     $url = $adminURL.'redirect?dir=not_logged_in';
-//     header("Location: $url");
-// }
+ else{
+     $url = $adminURL.'redirect?dir=not_logged_in';
+     header("Location: $url");
+}

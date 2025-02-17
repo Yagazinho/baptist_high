@@ -1,31 +1,31 @@
 <?php
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $roleName = getDBCol('roles', $id);
+    $studentName = getDBCol('students', $id);
     
     
-    if(isset($_GET['act-role'])){
-        if(changeStatus('roles', $id, 'active') == 'ok'){
-            $smsg = "role $roleName activated successfully";
+    if(isset($_GET['act-student'])){
+        if(changeStatus('students', $id, 'active') == 'ok'){
+            $smsg = "student $studentName activated successfully";
 		    pageReload(3000, $pageURL);
         }
     }
     
-    if(isset($_GET['dact-role'])){
-        if(changeStatus('roles', $id, 'inactive')){
-            $smsg = "role $roleName deactivated successfully";
+    if(isset($_GET['dact-student'])){
+        if(changeStatus('students', $id, 'inactive')){
+            $smsg = "student $studentName deactivated successfully";
 		    pageReload(3000, $pageURL);
         }
     }
     
-    if(isset($_GET['del-role'])){
-        $app_config['promptMsg'] = "You are about to delete role '$roleName', are you really sure?";
+    if(isset($_GET['del-student'])){
+        $app_config['promptMsg'] = "You are about to delete student '$studentName', are you really sure?";
         $app_config['prompt'] = true;
         $app_config['promptType'] = 'dark';
         if(isset($_POST['doPrompt'])){
             $app_config['prompt'] = false;
-            if(dbDelete('roles', 'id='.$id)){
-                $smsg = "Role $roleName deleted successfully";
+            if(dbDelete('students', 'id='.$id)){
+                $smsg = "Student $studentName deleted successfully";
 		        pageReload(3000, $pageURL);
             }
             else{
@@ -36,13 +36,13 @@ if(isset($_GET['id'])){
 }
 
 if(isset($_GET['truncate'])){
-	$app_config['promptMsg'] = "You are about to delete roles table are you sure?";
+	$app_config['promptMsg'] = "You are about to delete students table are you sure?";
 	$app_config['prompt'] = true;
 	$app_config['promptType'] = 'dark';
 	if(isset($_POST['doPrompt'])){
 	$app_config['prompt'] = false;
-	if(dbTruncate('roles') == 'success'){
-		$smsg = 'Roles table truncated successfully';
+	if(dbTruncate('students') == 'success'){
+		$smsg = 'Students table truncated successfully';
 	}
 	else{
 		$emsg = "Something went wrong";
@@ -51,69 +51,87 @@ if(isset($_GET['truncate'])){
 }
 
 
-// add roles
+// add students
 // logics
-if(isset($_POST['addRole'])){
+if(isset($_POST['addStudent'])){
     //collection and scrutiny of data from form
-    $roleName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['roleName'])));
+    $fName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['fName'])));
+    $lName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['lName'])));
+    $email = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['email'])));
+    $pwd = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['pwd'])));
+    $dob = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['dob'])));
+    $address = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['address'])));
+    $phone = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['phone'])));
+    $parent = intval(trim($_POST['parent']));
+    $class = intval(trim($_POST['class']));
+    $section = intval(trim($_POST['section']));
+    $gender = intval(trim($_POST['gender']));
+    $bloodGroup = intval(trim($_POST['bloodGroup']));
+    $coverImage = $_FILES['coverImage']['name'];
+    $coverImageFile = $_FILES['coverImage']['tmp_file'];
+    $coverImageSz = $_FILES['coverImage']['size'];
+    $imgNameArr = explode('.',$coverImage);
+    $fileExts = end($imageNameArr);
+    $validExt = ['jpeg','jpg','png'];
+    
 
     // data validation
-    if(empty($roleName)){
-        array_push($errs, $roleNameError = "Please Input a Role Name");
+    if(empty($studentName)){
+        array_push($errs, $studentNameError = "Please Input a Student First Name");
     }
 
     // prevent duplicate in database
-    $checkRole = mysqli_query($dbCon, "SELECT * FROM roles WHERE name='$roleName'");
-    if(mysqli_num_rows($checkRole) > 0){
-        array_push($errs, $roleExistError = "");
-        $emsg = "Role '$roleName' already exist please choose another";
+    $checkStudent = mysqli_query($dbCon, "SELECT * FROM students WHERE name='$studentName'");
+    if(mysqli_num_rows($checkStudent) > 0){
+        array_push($errs, $studentExistError = "");
+        $emsg = "Student '$studentName' already exist please choose another";
     }
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO roles (name, dc) VALUES ('$roleName', NOW())");
+        $query = mysqli_query($dbCon, "INSERT INTO students (name, dc) VALUES ('$studentName', NOW())");
         if($query){
-            $smsg = "Role '$roleName' saved successfully";
+            $smsg = "Student '$studentName' saved successfully";
 		    pageReload(2000, $pageURL);
         }else{
-            $emsg = "Role could not be saved".mysqli_error($dbCon);
+            $emsg = "Student could not be saved".mysqli_error($dbCon);
 		    pageReload(2000, $pageURL);
         }
     }
 
 }
 
-//edit role
+//edit student
 
-if(isset($_POST['updateRole'])){
+if(isset($_POST['updateStudent'])){
     //collection and scrutiny of data from form
-    $roleName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['roleName'])));
-    $oldRoleName = getDBCol('roles', $id);
+    $studentName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['studentName'])));
+    $oldStudentName = getDBCol('students', $id);
 
     // data validation
-    if(empty($roleName)){
-        array_push($errs, $roleNameError = "Please Input a Role Name");
+    if(empty($studentName)){
+        array_push($errs, $studentNameError = "Please Input a Student Name");
     }
     
-    if($oldRoleName == $roleName){
-        array_push($errs, $roleExistError = "Modification is required to continue");
+    if($oldStudentName == $studentName){
+        array_push($errs, $studentExistError = "Modification is required to continue");
     }
 
     // prevent duplicate in database
-    $checkRole = mysqli_query($dbCon, "SELECT * FROM roles WHERE name='$roleName'");
-    if(mysqli_num_rows($checkRole) > 0){
-        array_push($errs, $roleExistError = "");
-        $emsg = "Role '$roleName' already exist please choose another";
+    $checkStudent = mysqli_query($dbCon, "SELECT * FROM students WHERE name='$studentName'");
+    if(mysqli_num_rows($checkStudent) > 0){
+        array_push($errs, $studentExistError = "");
+        $emsg = "Student '$studentName' already exist please choose another";
     }
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "UPDATE roles SET name='$roleName', du=NOW() WHERE id=$id");
+        $query = mysqli_query($dbCon, "UPDATE students SET name='$studentName', du=NOW() WHERE id=$id");
         if($query){
-            $smsg = "Role '$oldRoleName' updated to '$roleName' successfully";
+            $smsg = "Student '$oldStudentName' updated to '$studentName' successfully";
 		    pageReload(2000, $pageURL);
         }else{
-            $emsg = "Role could not be saved".mysqli_error($dbCon);
+            $emsg = "Student could not be saved".mysqli_error($dbCon);
 		    pageReload(2000, $pageURL);
         }
     }

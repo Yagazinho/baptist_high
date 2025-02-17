@@ -214,6 +214,8 @@ include '../inc/logics/students.php';
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">action</th>
+                                                    <th class="text-center">User Id</th>
+                                                    <th class="text-center">image</th>
                                                     <th class="text-center">name</th>
                                                     <th class="text-center">dc</th>
                                                     <th class="text-center">du</th>
@@ -253,6 +255,8 @@ include '../inc/logics/students.php';
                                                         </div>
                                                     </td>
                                                     </td>
+                                                    <td class="text-center"><?= $row['userId'] ?></td>
+                                                    <td class="text-center"><img src="uploads/images/students/<?= $row['image']; ?>" alt="Student Avater" class="img-fluid rounded-circle" width="40"></td>
                                                     <td class="text-center"><?= $fullName ?></td>
                                                     <td class="text-center"><?= $row['dc']?></td>
                                                     <td class="text-center">

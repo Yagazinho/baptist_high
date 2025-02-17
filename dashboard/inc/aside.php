@@ -88,6 +88,16 @@
                         <i class="bi bi-circle"></i><span>Genders</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= $adminURL ?>departments">
+                        <i class="bi bi-circle"></i><span>Departments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $adminURL ?>designations">
+                        <i class="bi bi-circle"></i><span>Designations</span>
+                    </a>
+                </li>
             </ul>
         </li>
 

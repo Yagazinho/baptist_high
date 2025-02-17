@@ -77,7 +77,7 @@ include('../inc/head.php');
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Designation</div>
-                                    <div class="col-lg-9 col-md-8"><?= $cuDesignation ?></div>
+                                    <div class="col-lg-9 col-md-8"><?= getDBCol('designations',$cuDesignation) ?></div>
                                 </div>
 
                                 <div class="row">
@@ -150,7 +150,15 @@ include('../inc/head.php');
                                     <div class="row mb-3">
                                         <label for="designation" class="col-md-4 col-lg-3 col-form-label">Designation</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="designation" type="text" class="form-control" id="designation" value="<?= $cuDesignation ?>">
+                                            <select name="designation"  class="form-select">
+                                                <option value="">Select Designation</option>
+                                                <?php
+                                                $q = dbSelect('designations',"*","status='active'");
+                                                while($row=mysqli_fetch_array($q)){
+                                                ?>
+                                                <option <?php if($cuDesignation == $row['id']) {echo 'selected'; } ?> value="<?= $row['id']?>"><?= $row['name']?></option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
                                     </div>
 
