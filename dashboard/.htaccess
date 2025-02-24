@@ -13,6 +13,7 @@ RewriteRule ^redirect inc/redirect.php [NC,L]
 
 
 RewriteRule ^roles view/roles.php [NC,L]
+RewriteRule ^not-found view/404.php [NC,L]
 RewriteRule ^profile view/profile.php [NC,L]
 RewriteRule ^blood-groups view/blood-groups.php [NC,L]
 RewriteRule ^states view/states.php [NC,L]

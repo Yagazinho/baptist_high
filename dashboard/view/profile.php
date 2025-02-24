@@ -66,43 +66,43 @@ include('../inc/head.php');
                                 <?php if(isset($_GET['vw']) && $_GET['vw'] == 'overview'): ?>
                             <div class="tab-pane fade show active pt-3">
                                 <h5 class="card-title">About</h5>
-                                <p class="small fst-italic"><?= $cuBio ?></p>
+                                <p class="small fst-italic text-bl"><?= $cuBio ?></p>
 
                                 <h5 class="card-title">Profile Details</h5>
 
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8"><?= $cuFName." ".$cuLName ?></div>
+                                <div class="row mb-2">
+                                    <div class="col-lg-3 col-md-4 label">Full Name</div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= $cuFName." ".$cuLName ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Designation</div>
-                                    <div class="col-lg-9 col-md-8"><?= getDBCol('designations',$cuDesignation) ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= getDBCol('designations',$cuDesignation) ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Gender</div>
-                                    <div class="col-lg-9 col-md-8"><?= getDBCol('genders',$cuGender) ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= getDBCol('genders',$cuGender) ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Nationality</div>
-                                    <div class="col-lg-9 col-md-8"><?= getDBCol('countries',$cuCountry) ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= getDBCol('countries',$cuCountry) ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Address</div>
-                                    <div class="col-lg-9 col-md-8"><?= $cuAddress ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= $cuAddress ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Phone</div>
-                                    <div class="col-lg-9 col-md-8"><?= $cuPhone ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= $cuPhone ?></div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mb-2">
                                     <div class="col-lg-3 col-md-4 label">Email</div>
-                                    <div class="col-lg-9 col-md-8"><?= $cuEmail ?></div>
+                                    <div class="col-lg-9 col-md-8 text-bl"><?= $cuEmail ?></div>
                                 </div>
 
                             </div>

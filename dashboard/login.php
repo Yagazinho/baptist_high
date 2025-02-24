@@ -14,6 +14,13 @@ include 'inc/head.php';
 ?>
 
 <main>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="w-100" style="max-width:400px;">
+            <h3 class="text-center mb-4">
+                
+            </h3>
+        </div>
+    </div>
     <div class="container">
 
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">

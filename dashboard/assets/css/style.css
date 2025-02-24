@@ -3,6 +3,8 @@
     --primary-color: #012970;
     --main-white: #f6f9ff;
     --text-color: #444444;
+    --primary-lt:  #717ff5;
+    --primary-lt1: #4154f1;
 }
 
 body {
@@ -12,7 +14,7 @@ body {
 }
 
 a {
-    color: #4154f1;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -30,8 +32,17 @@ h6 {
     font-family: "Nunito", sans-serif;
 }
 
-label{
-    color: #717ff5 !important;
+.profile .label{
+    color: var(--text-color) !important;
+    font-weight: bold;
+}
+
+.profile .text-bl{
+    color: var(--text-color);
+}
+
+p.text-info{
+    color: gray !important;
 }
 
 .preview-box img {
@@ -414,13 +425,15 @@ td {
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-    color: #4154f1;
+    color: var(--primary-color);
+    font-weight: bold;
 }
 
 .nav-tabs-bordered .nav-link.active {
-    background-color: #fff;
-    color: #4154f1;
-    border-bottom: 2px solid #4154f1;
+    background-color: var(--primary-color);
+    color: var(--main-white);
+    padding: 10px 15px;
+    border-radius: 25px;
 }
 
 /*--------------------------------------------------------------

@@ -14,6 +14,17 @@ function dbInsert($table,$param=array()){
     }
 }
 
+function countRows($tbl, $where=null){
+    global $dbCon;
+    if($where != null){
+        $q = mysqli_query($dbCon, "SELECT * FROM $tbl WHERE $where");
+    }
+    else{
+        $q = mysqli_query($dbCon, "SELECT * FROM $tbl");
+    }
+    return mysqli_num_rows($q);
+}
+
 function logAction($msg, $user, $userType = 'admin', $color = 'success'){
     global $now;
     if(!empty($msg) && ($user != '' || $user > 0)){
