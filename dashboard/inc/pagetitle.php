@@ -1,4 +1,4 @@
-<div class="pagetitle d-flex px-3 py-3">
+<div class="pagetitle d-flex px-3 py-1">
     <h1><?php
 			if(defined("HEADER")){
 				print HEADER;
@@ -12,7 +12,7 @@
     </div>
     <nav class="ms-auto">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html"><i class="bi bi-house"></i></a></li>
+            <li class="breadcrumb-item"><a href="<?= $clientBase ?>"><i class="bi bi-house"></i></a></li>
             <li class="breadcrumb-item active">
                 <?php 
                

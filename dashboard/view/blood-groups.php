@@ -1,5 +1,6 @@
 <?php
 include("../inc/config.php");
+include '../inc/auth.php';
 
 
 define("TITLE", "Manage Blood Groups");

@@ -10,15 +10,12 @@
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
-
-            <li class="nav-item d-block d-lg-none">
-                <a class="nav-link nav-icon search-bar-toggle " href="#">
-                    <i class="bi bi-search"></i>
-                </a>
-            </li><!-- End Search Icon-->
-
+            <?php if(isset($authPage) && $authPage): ?>
+            <a id="themeToggle" href="#">
+                <i id="darkToggle" class="fa fa-solid fa-moon" style="font-size: 24px;"></i>
+            </a>
+            <?php endif ?>
             <li class="nav-item dropdown">
-
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
                     <span class="badge bg-primary badge-number">4</span>
@@ -137,7 +134,8 @@
                     </li>
 
                 </ul><!-- End Profile Dropdown Items -->
-            </li><!-- End Profile Nav --><!-- End Profile Nav -->
+            </li><!-- End Profile Nav -->
+            <!-- End Profile Nav -->
 
         </ul>
     </nav><!-- End Icons Navigation -->

@@ -5,12 +5,30 @@
     --text-color: #444444;
     --primary-lt:  #717ff5;
     --primary-lt1: #4154f1;
+    --primary-gr: #808080;
+    --dark-bg: #121212;
+    --yellow-color: #ffdf00;
 }
 
 body {
     font-family: "Open Sans", sans-serif;
     background: #f6f9ff;
     color: #444444;
+}
+
+
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--main-white);
+}
+
+
+body.dark-mode .bi-sun {
+    color: var(--yellow-color)
+}
+
+body.dark-mode .bi-sun:hover {
+    color: var(--yellow-color)
 }
 
 a {
@@ -297,6 +315,21 @@ td {
 .btn-close:focus {
     outline: 0;
     box-shadow: none;
+}
+
+.btn-login {
+    background-color: var(--primary-gr);
+    color: var(--main-white) !important;
+    padding: 15px 0;
+    font-size: 18px !important;
+    border-radius: 5px !important;
+    width: 100% !important;
+}
+
+.btn-login:hover{
+    color: var(--primary-gr) !important;
+    background-color: transparent !important;
+    border-color: var(--primary-gr) !important;
 }
 
 .btn-theme {
@@ -920,6 +953,17 @@ td {
     background: #ecc9cf;
 }
 
+.dashboard .parents-card .card-icon {
+    color: rgb(255, 144, 104);
+    background: rgb(255, 232, 224);
+}
+
+.dashboard .staff-card .card-icon {
+    color: var(--primary-gr);
+    background: #e7e7e7;
+}
+
+
 /* Activity */
 .dashboard .activity {
     font-size: 14px;
@@ -1320,4 +1364,20 @@ td {
 .form-section .card{
     max-width: 600px !important;
     width: 100%;
+}
+
+.login-header{
+    background-color: var(--primary-color);
+    padding: 20px 0;
+    color: var(--main-white);
+}
+.login .bx{
+    color: var(--text-color) !important;
+}
+
+.login .form-control{
+    border: none;
+    border-bottom: 2px solid gray !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }

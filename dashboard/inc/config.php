@@ -9,12 +9,14 @@ $app_config = [
 	'promptType' => ""
 ];
 
+//$authPage = false;
 
 //Base url
-$baseURL = ($app_config['env'] != 'dev') ? "" : "http://localhost/projects/baptist-high/";
+$baseURL = ($app_config['env'] != 'dev') ? "" : "https://localhost/projects/baptist-high/baptist-high/";
 $adminURL = $baseURL."dashboard/";
 $userURL = $baseURL."user/";
 $uploadsURL = $adminURL."uploads/";
+$clientBase = "https://localhost/projects/baptist-high/baptist-high/";
 
 
 const DB_HOST = 'localhost';

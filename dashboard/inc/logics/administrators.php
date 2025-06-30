@@ -4,7 +4,7 @@ if(isset($_GET['id'])){
     $id = $_GET['id'];
     $userName = getDBCol('administrators', $id, 'username');
     $dbEmail = getDBCol('administrators', $id, 'email');
-    $dbRole = getDBCol('adminsitrators', $id, 'role');
+    $dbRole = getDBCol('administrators', $id, 'role');
     $dbRoleName = getDBCol('roles', $dbRole);
     
     

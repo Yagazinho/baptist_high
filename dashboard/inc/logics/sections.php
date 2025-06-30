@@ -2,6 +2,12 @@
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     $sectionName = getDBCol('sections', $id);
+
+    if(isset($_GET['edit-section'])){
+        $dbClass = getDBCol('sections', $id, 'classID');
+        $dbClassName = getDBCol('classes', $dbClass);
+
+    }
     
     
     if(isset($_GET['act-section'])){
@@ -19,7 +25,7 @@ if(isset($_GET['id'])){
     }
     
     if(isset($_GET['del-section'])){
-        $app_config['promptMsg'] = "You are about to delete section '$sectionName', are you really sure?";
+        $app_config['promptMsg'] = "You are about to delete section '$dbClassName$sectionName', are you really sure?";
         $app_config['prompt'] = true;
         $app_config['promptType'] = 'dark';
         if(isset($_POST['doPrompt'])){
@@ -56,24 +62,28 @@ if(isset($_GET['truncate'])){
 if(isset($_POST['addSection'])){
     //collection and scrutiny of data from form
     $sectionName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['sectionName'])));
+    $className = intval(trim($_POST['className']));
 
     // data validation
     if(empty($sectionName)){
         array_push($errs, $sectionNameError = "Please Input a Section Name");
     }
+    if(empty($className)){
+        array_push($errs, $classNameError = "Please Select a Class");
+    }
 
     // prevent duplicate in database
-    $checkSection = mysqli_query($dbCon, "SELECT * FROM sections WHERE name='$sectionName'");
+    $checkSection = mysqli_query($dbCon, "SELECT * FROM sections WHERE classID='$className' AND name='$sectionName'");
     if(mysqli_num_rows($checkSection) > 0){
         array_push($errs, $sectionExistError = "");
-        $emsg = "Section '$sectionName' already exist please choose another";
+        $emsg = "Section '$className $sectionName' already exist please choose another";
     }
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO sections (name, dc) VALUES ('$sectionName', NOW())");
+        $query = mysqli_query($dbCon, "INSERT INTO sections (classID, name, dc) VALUES ('$className','$sectionName', NOW())");
         if($query){
-            $smsg = "Section '$sectionName' saved successfully";
+            $smsg = "Section '$className $sectionName' saved successfully";
 		    pageReload(2000, $pageURL);
         }else{
             $emsg = "Section could not be saved".mysqli_error($dbCon);
@@ -87,6 +97,7 @@ if(isset($_POST['addSection'])){
 
 if(isset($_POST['updateSection'])){
     //collection and scrutiny of data from form
+    $className = intval(trim($_POST['className']));
     $sectionName = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['sectionName'])));
     $oldSectionName = getDBCol('sections', $id);
 

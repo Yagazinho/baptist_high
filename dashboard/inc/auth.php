@@ -7,6 +7,7 @@ if(isset($_SESSION['msmAdmin'])){
     $q = dbSelect('administrators',"*","id=$uId");
     $userData = mysqli_fetch_array($q);
     $cuUserName = $userData['username'];
+    $cuUserID = $userData['userID'];
     $cuFName = $userData['fname'];
     $cuLName = $userData['lname'];
     $cuEmail = $userData['email'];

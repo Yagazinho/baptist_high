@@ -25,6 +25,11 @@ include '../inc/logics/students.php';
 
         <section class="section dashboard">
             <div class="row">
+                <div class="col-lg-12">
+                    <div class="float-end">
+                        <a href="<?= $adminURL ?>attendance" class="btn btn-md btn-theme1 mb-3 me-3">Attendance</a>
+                    </div>
+                </div>
 
                 <!-- Left side columns -->
                 <div class="col-lg-12">
@@ -57,22 +62,6 @@ include '../inc/logics/students.php';
                                                     <div class="form-group col-md-12 mt-1">
                                                         <input type="text" placeholder="Password *" value="<?= isset($_POST['pwd']) ? $_POST['pwd'] : '' ?>" class="form-control mt-2" name="pwd">
                                                         <span class="text-danger"><?php if(isset($pwdError)){echo $pwdError;} ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-12 mt-1">
-                                                        <label class="form-label">Parent</label>
-                                                        <div class="input-group mb-1">
-                                                            <span class="btn btn-theme1" type="submit"><i class="bx bx-user"></i></span>
-                                                            <select class="form-select" name="parent">
-                                                                <option value="">--select Parent--</option>
-                                                                <?php
-                                                                        $q = dbSelect('parents',"*","status='active'");
-                                                                        while($row = mysqli_fetch_array($q)){
-                                                                    ?>
-                                                                <option <?php if((isset($_POST['parent']) && $_POST['parent'] == $row['id'])){ echo 'selected'; } ?> value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                        <span class="text-danger"><?php if(isset($parentError)){echo $parentError;} ?></span>
                                                     </div>
                                                     <div class="form-group col-md-12 mt-1">
                                                         <label class="form-label">Class</label>
@@ -127,7 +116,7 @@ include '../inc/logics/students.php';
                                                         <div class="input-group mb-1">
                                                             <span class="btn btn-theme1" type="submit"><i class="bx bx-plus-medical"></i></span>
                                                             <select class="form-select" name="bloodGroup">
-                                                                <option value="">--select Class--</option>
+                                                                <option value="">-- Select Blood Group --</option>
                                                                 <?php
                                                                         $q = dbSelect('blood_groups',"*","status='active'");
                                                                         while($row = mysqli_fetch_array($q)){
@@ -139,7 +128,7 @@ include '../inc/logics/students.php';
                                                         <span class="text-danger"><?php if(isset($bloodGroupError)){echo $bloodGroupError;} ?></span>
                                                     </div>
                                                     <div class="form-group col-md-12 mt-2">
-                                                        <label for="dob">Birthday</label>
+                                                        <label for="dob">DOB</label>
                                                         <input type="date" placeholder="" value="<?= isset($_POST['dob']) ? $_POST['dob'] : '' ?>" class="form-control mt-1" name="dob">
                                                         <span class="text-danger"><?php if(isset($dobError)){echo $dobError;} ?></span>
                                                     </div>
@@ -150,14 +139,6 @@ include '../inc/logics/students.php';
                                                     <div class="form-group col-md-12 mt-2">
                                                         <input type="" placeholder="Phone" value="<?= isset($_POST['phone']) ? $_POST['phone'] : '' ?>" class="form-control mt-1" name="phone">
                                                         <span class="text-danger"><?php if(isset($phoneError)){echo $phoneError;} ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-12 mt-2">
-                                                        <label for="">Student Profile Image</label>
-                                                        <input type="file" name="coverImage" class="form-control form-control-file" onchange="showPreview(this)">
-                                                        <span class="text-danger"><?php if(isset($coverImageError)){echo $coverImageError ;} ?></span>
-                                                    </div>
-                                                    <div class="preview-box my-3 py-3 px-3">
-                                                        <img src="<?=$uploadsURL ?>images/students/imgnam.jpg" alt="" class="imgThumb rounded">
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -217,6 +198,7 @@ include '../inc/logics/students.php';
                                                     <th class="text-center">User Id</th>
                                                     <th class="text-center">image</th>
                                                     <th class="text-center">name</th>
+                                                    <th class="text-center">class</th>
                                                     <th class="text-center">dc</th>
                                                     <th class="text-center">du</th>
                                                     <th class="text-center">status</th>
@@ -232,8 +214,12 @@ include '../inc/logics/students.php';
                                                     $du = $row['du'];
                                                     $fname = $row['fname'];
                                                     $lname = $row['lname'];
+                                                $className = getDBCol('classes', $row['class']);
+                                                $sectionName = getDBCol('sections', $row['sectionId']);
+                                                    $fullClassName = $className.$sectionName;
                                                     $fullName = $fname." ".$lname;
                                                 $status = $row['status'];
+                                                    
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++; ?></td>
@@ -247,7 +233,7 @@ include '../inc/logics/students.php';
                                                                 <?php if($status == 'active'): ?>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>students?id=<?= $row['id'] ?>&edit-student&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>students?id=<?= $row['id'] ?>&dact-student"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
-                                                                <?php elseif($status == 'inactive'): ?>
+                                                                <?php elseif(($status == 'inactive') || ($status == 'pending')): ?>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>students?id=<?= $row['id'] ?>&del-student"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
                                                                 <a class="dropdown-item" href="<?= $adminURL ?>students?id=<?= $row['id'] ?>&act-student"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
                                                                 <?php endif ?>
@@ -258,6 +244,7 @@ include '../inc/logics/students.php';
                                                     <td class="text-center"><?= $row['userId'] ?></td>
                                                     <td class="text-center"><img src="uploads/images/students/<?= $row['image']; ?>" alt="Student Avater" class="img-fluid rounded-circle" width="40"></td>
                                                     <td class="text-center"><?= $fullName ?></td>
+                                                    <td class="text-center"><?= $fullClassName ?></td>
                                                     <td class="text-center"><?= $row['dc']?></td>
                                                     <td class="text-center">
                                                         <?php if(empty($du)){

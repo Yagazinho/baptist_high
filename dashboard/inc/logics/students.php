@@ -1,7 +1,9 @@
 <?php
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $studentName = getDBCol('students', $id);
+    $fname = getDBCol('students', $id, 'fname');
+    $lname = getDBCol('students', $id, 'lname');
+    $studentName = $fname." ".$lname;
     
     
     if(isset($_GET['act-student'])){
@@ -62,40 +64,73 @@ if(isset($_POST['addStudent'])){
     $dob = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['dob'])));
     $address = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['address'])));
     $phone = trim(stripslashes(mysqli_real_escape_string($dbCon, $_POST['phone'])));
-    $parent = intval(trim($_POST['parent']));
     $class = intval(trim($_POST['class']));
     $section = intval(trim($_POST['section']));
     $gender = intval(trim($_POST['gender']));
     $bloodGroup = intval(trim($_POST['bloodGroup']));
-    $coverImage = $_FILES['coverImage']['name'];
-    $coverImageFile = $_FILES['coverImage']['tmp_file'];
-    $coverImageSz = $_FILES['coverImage']['size'];
-    $imgNameArr = explode('.',$coverImage);
-    $fileExts = end($imageNameArr);
-    $validExt = ['jpeg','jpg','png'];
     
 
     // data validation
-    if(empty($studentName)){
-        array_push($errs, $studentNameError = "Please Input a Student First Name");
+    if(empty($fName)){
+        array_push($errs, $fNameError = "Please Input a Student First Name");
     }
+    if(empty($lName)){
+        array_push($errs, $lNameError = "Please Input a Student Last Name");
+    }
+    if(empty($email)){
+        array_push($errs, $emailError = "field cannot be empty");
+    }
+    if(empty($pwd)){
+        array_push($errs, $pwdError = "field cannot be empty");
+    }
+    if(empty($dob)){
+        array_push($errs, $dobError = "field cannot be empty");
+    }
+    if($class == (0 || "")){
+        array_push($errs, $classError = "Please Select a Class");
+    }
+    if($section == (0 || "")){
+        array_push($errs, $sectionError = "Please Select a Class Section");
+    }
+    if($gender == (0 || "")){
+        array_push($errs, $genderError = "Please Select a Gender");
+    }
+//    if(strlen($phone) < 11){
+//        array_push($errs, $phoneError = "Invalid phone number");
+//    }
 
-    // prevent duplicate in database
-    $checkStudent = mysqli_query($dbCon, "SELECT * FROM students WHERE name='$studentName'");
-    if(mysqli_num_rows($checkStudent) > 0){
-        array_push($errs, $studentExistError = "");
-        $emsg = "Student '$studentName' already exist please choose another";
-    }
+     
+    $targetTable = "students";
+    $prefix = "SMS-";
+    $tag = "student";
+    
+//        Prevent duplicate data in database
+        if(cntRows($targetTable, "*", "email='$email'") > 0){
+            array_push($errs, $emailError = "$tag already exists");
+        $emsg = "email '$email' already taken by a $tag in the database. try again";
+        }
+        if(cntRows($targetTable,"*","phone='$phone'") > 0){
+            array_push($errs, $phoneError = "$tag Exists");;
+        $emsg = "phone number '$phone' already taken by a $tag in the database. try again";
+        }
+        
 
     // proceed to data storage when there is no error
     if(count($errs) == 0){
-        $query = mysqli_query($dbCon, "INSERT INTO students (name, dc) VALUES ('$studentName', NOW())");
+            $cryptPwd = md5($pwd);
+            while(true){
+                $randVal = "$prefix".rand(0000000,9999999);
+                if(preventDuplicateID($targetTable, $randVal) == 'ok'){
+                break;
+                }
+            }
+        $query = mysqli_query($dbCon, "INSERT INTO $targetTable (userId,fname,lname,email,password,dob,class,sectionId,gender,address,bloodGroup,dc) VALUES ('$randVal','$fName','$lName','$email','$cryptPwd','$dob',$class,$section,$gender,'$address',$bloodGroup,NOW())");
         if($query){
             $smsg = "Student '$studentName' saved successfully";
 		    pageReload(2000, $pageURL);
         }else{
-            $emsg = "Student could not be saved".mysqli_error($dbCon);
-		    pageReload(2000, $pageURL);
+            $emsg = "Student could not be saved ".mysqli_error($dbCon);
+//		    pageReload(2000, $pageURL);
         }
     }
 

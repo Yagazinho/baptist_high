@@ -55,7 +55,7 @@ function formatStatus($status){
 }
 
 
-function dbUpdate($table,$param=array(),$id){
+function dbUpdate($table,$param=array(),$id=0){
     $args = array();
     global $dbCon;
 

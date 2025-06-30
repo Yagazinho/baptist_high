@@ -3,16 +3,16 @@ include("../inc/config.php");
 include '../inc/auth.php';
 
 
-define("TITLE", "Manage Sections");
-define("HEADER", "Manage Sections");
-define("BREADCRUMB", "sections");
+define("TITLE", "Manage Attendance Types");
+define("HEADER", "Manage Attendance Types");
+define("BREADCRUMB", "attendance typess");
 
 include('../inc/head.php'); 
 
 // page level scripts
-$pageURL = $adminURL."sections";
+$pageURL = $adminURL."attendance-types";
 
-include '../inc/logics/sections.php';
+include '../inc/logics/attendance-types.php';
 ?>
 
 <body>
@@ -31,75 +31,51 @@ include '../inc/logics/sections.php';
                     <div class="row">
                         <?php if(isset($_GET['min'])):?>
                         <div class="col-md-4">
-                            <?php if(isset($_GET['add-section'])):?>
+                            <?php if(isset($_GET['add-attendanceType'])):?>
                             <div class="card border-0 shadow-lg">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Add Section</h6>
+                                    <h6 class="card-title d-inline">Add Attendance Type</h6>
                                     <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="add-section">
+                                        <div class="add-attendanceType">
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <select class="form-select" name="className">
-                                                            <option value="">--select Class--</option>
-                                                            <?php
-                                                                        $q = dbSelect('classes',"*","status='active'");
-                                                                        while($row = mysqli_fetch_array($q)){
-                                                                    ?>
-                                                            <option <?php if((isset($_POST['className']) && $_POST['className'] == $row['id'])){ echo 'selected'; } ?> value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <input type="text" placeholder="Section*" value="<?= isset($_POST['sectionName']) ? $_POST['sectionName'] : '' ?>" class="form-control mt-2" name="sectionName">
-                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
+                                                    <div class="form-group col-md-12">
+                                                        <input type="text" placeholder="Attendance Type *" value="<?= isset($_POST['attendanceTypeName']) ? $_POST['attendanceTypeName'] : '' ?>" class="form-control mt-2" name="attendanceTypeName">
+                                                        <span class="text-danger"><?php if(isset($attendanceTypeNameError)){echo $attendanceTypeNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="addSection" class="btn btn-md btn-success text-white w-100">Add</button>
+                                                <button type="submit" name="addAttendanceType" class="btn btn-md btn-success text-white w-100">Add</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <?php endif ?>
-                            <?php if(isset($_GET['edit-section'])):?>
+                            <?php if(isset($_GET['edit-attendanceType'])):?>
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="card-header border-0">
-                                    <h6 class="card-title d-inline">Edit Section <span class="bg-theme ms-1"><?= $dbClassName.$sectionName ?></span>
+                                    <h6 class="card-title d-inline">Edit Attendance Type <span class="bg-theme ms-1"><?= $attendanceTypeName?></span>
                                         <a href="<?= $pageURL ?>" class=""><i class="bx bx-x text-danger float-end"></i></a>
                                     </h6>
                                 </div>
                                 <div class="card-body">
                                     <form action="" method="post">
-                                        <div class="edit-section">
+                                        <div class="edit-attendanceType">
                                             <fieldset>
                                                 <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <select class="form-select" name="className">
-                                                            <option value="">--Select Class--</option>
-                                                            <?php
-                                                                        $q = dbSelect('classes',"*","status='active'");
-                                                                        while($row = mysqli_fetch_array($q)){
-                                                                    ?>
-                                                            <option <?php if(isset($_POST['className']) && $_POST['className'] == $row['id'] || $dbClass == $row['id']) {echo 'selected';}?>value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <span class="text-danger"><?php if(isset($classNameError)){echo $classNameError;} ?></span>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <input type="text" placeholder="" value="<?= isset($_POST['sectionName']) ? $_POST['sectionName'] : $sectionName ?>" class="form-control mt-2" name="sectionName">
-                                                        <span class="text-danger"><?php if(isset($sectionNameError)){echo $sectionNameError;} ?></span>
+                                                    <div class="form-group col-md-12">
+                                                        <input type="text" placeholder="" value="<?= isset($_POST['attendanceTypeName']) ? $_POST['attendanceTypeName'] : $attendanceTypeName ?>" class="form-control mt-2" name="attendanceTypeName">
+                                                        <span class="text-danger"><?php if(isset($attendanceTypeNameError)){echo $attendanceTypeNameError;} ?></span>
                                                     </div>
                                                 </div>
                                             </fieldset>
                                             <div class="my-4">
-                                                <button type="submit" name="updateSection" class="btn btn-md btn-primary text-white">Update</button>
+                                                <button type="submit" name="updateAttendanceType" class="btn btn-md btn-primary text-white">Update</button>
                                             </div>
                                         </div>
                                     </form>
@@ -112,7 +88,7 @@ include '../inc/logics/sections.php';
                             <div class="card border-0 shadow-lg px-2 py-3">
                                 <div class="border-bottom py-1 mb-3 px-3">
                                     <div class="btn-group">
-                                        <a href="<?= $pageURL ?>?add-section&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
+                                        <a href="<?= $pageURL ?>?add-attendanceType&min" class="btn btn-theme btn-sm"><i class="bx bx-plus"></i></a>
                                     </div>
                                     <div class="btn-group float-end">
                                         <a href="<?= $pageURL ?>" class="btn btn-theme btn-sm"><i class="bx bx-refresh"></i></a>
@@ -125,7 +101,7 @@ include '../inc/logics/sections.php';
                                                 <tr>
                                                     <th class="text-center">#</th>
                                                     <th class="text-center">action</th>
-                                                    <th class="text-center">Class Section</th>
+                                                    <th class="text-center">name</th>
                                                     <th class="text-center">dc</th>
                                                     <th class="text-center">du</th>
                                                     <th class="text-center">status</th>
@@ -134,14 +110,12 @@ include '../inc/logics/sections.php';
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                $query = mysqli_query($dbCon, "SELECT * FROM sections");
+                                                $query = mysqli_query($dbCon, "SELECT * FROM attendance_types");
                                                 while($row = mysqli_fetch_array($query)){
                                                     $dc = date("F jS, Y h:ia",strtotime($row['dc']));
                                                     $duFormatted = date("F jS, Y h:ia",strtotime($row['du']));
                                                     $du = $row['du'];
                                                 $status = $row['status'];
-                                                $class = getDBCol('classes', $row['classID']);
-                                                $section = $row['name'];
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?= $no++; ?></td>
@@ -153,17 +127,17 @@ include '../inc/logics/sections.php';
                                                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actnBtn">
                                                                 <h6 class="dropdown-header">Actions</h6>
                                                                 <?php if($status == 'active'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&edit-section&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&dact-section"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>attendance-types?id=<?= $row['id'] ?>&edit-attendanceType&min"><i class="bx bx-edit me-1 text-black"></i>Edit</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>attendance-types?id=<?= $row['id'] ?>&dact-attendanceType"><i class="bx bx-x me-1 text-black"></i>Deactivate</a>
                                                                 <?php elseif($status == 'inactive'): ?>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&del-section"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
-                                                                <a class="dropdown-item" href="<?= $adminURL ?>sections?id=<?= $row['id'] ?>&act-section"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>attendance-types?id=<?= $row['id'] ?>&del-attendanceType"><i class="bx bx-trash me-1 text-black"></i>Delete</a>
+                                                                <a class="dropdown-item" href="<?= $adminURL ?>attendance-types?id=<?= $row['id'] ?>&act-attendanceType"><i class="bx bx-check-square me-1 text-black"></i>Activate</a>
                                                                 <?php endif ?>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     </td>
-                                                    <td class="text-center"><?= $class.$section?></td>
+                                                    <td class="text-center"><?= $row['name']?></td>
                                                     <td class="text-center"><?= $row['dc']?></td>
                                                     <td class="text-center">
                                                         <?php if(empty($du)){

@@ -2,8 +2,8 @@
 session_start();
 global $dbCon;
 if(isset($_POST['loginAdmin'])){
-    $user = trim(mysqli_real_escape_string($dbCon,$_POST['user']));
-    $password = trim(mysqli_real_escape_string($dbCon,$_POST['password']));
+    $user = trim(mysqli_real_escape_string($dbCon,$_POST['username']));
+    $password = trim(mysqli_real_escape_string($dbCon,$_POST['pass']));
     
     if(empty($user)){ $errs[] = $userError = "value expected"; }
     // if(empty($password)){ $errs[] = $passwordError = "value expected"; }

@@ -2178,6 +2178,7 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
     box-shadow: none !important;
     border-color: var(--accent-color) !important;
 }
+
 .form-container .btn-theme {
     color: var(--main-white);
     background-color: var(--accent-color) !important;
@@ -2198,11 +2199,11 @@ body.dark-mode .contact .php-email-form input[type=text]::placeholder,
     width: 800px !important;
 }
 
-.form-section .card{
+.form-section .card {
     border-radius: 50px;
 }
 
-.form-section .bx{
+.form-section .bx {
     font-size: 24px !important;
 }
 
