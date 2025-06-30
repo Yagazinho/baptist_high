@@ -1,6 +1,3 @@
-# sm-app
-School Manager
-
 # School Manager App
 
 The School Manager App is a web application designed to simplify and streamline the management of school operations. From managing student records to administrative tasks, this app is built with modern web technologies to deliver an efficient and user-friendly experience.
