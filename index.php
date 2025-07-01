@@ -18,7 +18,7 @@ include("includes/head.php");
                     <h1 data-aos="fade-up" class="hero-header">Welcome to <span>My School Manager</span></h1>
                     <p data-aos="fade-up" data-aos-delay="100">Enroll your ward for an amazing learning experience<br></p>
                     <div class="my-5" data-aos="fade-up" data-aos-delay="200">
-                        <a href="#about" class="btn-get-started px-5">Get Started</a>
+                        <a href="<?= $clientBase ?>signup" class="btn-get-started px-5">Get Started</a>
                     </div>
                     <img src="assets/img/herosvg.svg" class="img-fluid hero-img" alt="" data-aos="zoom-out" data-aos-delay="300">
                 </div>
